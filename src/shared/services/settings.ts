@@ -280,7 +280,7 @@ export async function getSettings() {
     {
       name: 'app_name',
       title: 'App Name',
-      placeholder: 'ShipAny',
+      placeholder: 'AI-Manga',
       type: 'text',
       group: 'appinfo',
       tab: 'general',
@@ -289,7 +289,7 @@ export async function getSettings() {
       name: 'app_description',
       title: 'App Description',
       placeholder:
-        'ShipAny is a NextJS boilerplate for building AI SaaS startups. ',
+        'AI-Manga is an all-in-one platform for creating AI manga and comic dramas.',
       type: 'textarea',
       group: 'appinfo',
       tab: 'general',
@@ -704,7 +704,7 @@ export async function getSettings() {
       name: 'resend_sender_email',
       title: 'Resend Sender Email',
       type: 'text',
-      placeholder: 'ShipAny Two <no-reply@mail.shipany.site>',
+      placeholder: 'AI-Manga <no-reply@ai-manga.com>',
       group: 'resend',
       tab: 'email',
     },

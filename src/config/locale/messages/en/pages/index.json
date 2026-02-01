@@ -2,147 +2,394 @@
   "page": {
     "show_sections": [
       "hero",
-      "logos",
-      "introduce",
-      "benefits",
+      "discover_more",
       "usage",
       "features",
-      "stats",
-      "testimonials",
-      "faq",
       "cta"
     ],
     "sections": {
       "hero": {
         "id": "hero",
-        "title": "Ship AI Startups in hours, not days",
-        "highlight_text": "in hours",
-        "description": "ShipAny is a NextJS boilerplate for building AI SaaS startups.<br/>Ship Fast with a variety of templates and components.",
+        "title": "AI-Manga, One-stop AI Manga film Creation Platform",
+        "highlight_text": "AI-Manga",
+        "description": "From script to storyboard, voice-over to final edit — create high-quality AI comic dramas in one place.",
         "announcement": {
-          "badge": "New",
-          "title": "🎉 ShipAny Template Two",
+          "title": "✨ AI-Manga is live",
           "url": "/pricing"
         },
-        "tip": "🎁 Special offer for the first 1000 users",
+        "tip": "Script → storyboard → character consistency → AI voice & edit",
         "buttons": [
           {
-            "title": "Get Started",
+            "title": "Start Creating",
             "icon": "Zap",
             "url": "/pricing",
             "target": "_self",
             "variant": "default"
           },
           {
-            "title": "Read Document",
-            "icon": "BookOpenText",
-            "url": "/docs",
-            "target": "_blank",
+            "title": "View Hot Comics",
+            "icon": "Play",
+            "url": "/#hot-comics",
+            "target": "_self",
             "variant": "outline"
           }
         ],
-        "show_avatars": true,
-        "avatars_tip": "999+ users are using ShipAny",
+        "show_avatars": false,
         "show_award": false,
-        "image": {
-          "src": "/imgs/features/admin.png",
-          "alt": "hero",
-          "width": 1200,
-          "height": 800
-        },
-        "image_invert": {
-          "src": "/imgs/features/admin-dark.png",
-          "alt": "hero",
-          "width": 1200,
-          "height": 800
-        },
-        "background_image": {
-          "src": "/imgs/bg/tree.jpg",
-          "alt": "hero"
+        "hot_comics": {
+          "id": "hot-comics",
+          "title": "",
+          "subtitle": "",
+          "description": "",
+          "items": [
+            {
+              "image": {
+                "src": "/imgs/covers/cover-1.png",
+                "alt": "Hot Comic 1"
+              }
+            },
+            {
+              "image": {
+                "src": "/imgs/covers/cover-2.png",
+                "alt": "Hot Comic 2"
+              }
+            },
+            {
+              "image": {
+                "src": "/imgs/covers/cover-3.png",
+                "alt": "Hot Comic 3"
+              }
+            },
+            {
+              "image": {
+                "src": "/imgs/covers/cover-4.png",
+                "alt": "Hot Comic 4"
+              }
+            },
+            {
+              "image": {
+                "src": "/imgs/covers/cover-5.png",
+                "alt": "Hot Comic 5"
+              }
+            },
+            {
+              "image": {
+                "src": "/imgs/covers/cover-6.png",
+                "alt": "Hot Comic 6"
+              }
+            },
+            {
+              "image": {
+                "src": "/imgs/covers/cover-7.png",
+                "alt": "Hot Comic 7"
+              }
+            },
+            {
+              "image": {
+                "src": "/imgs/covers/cover-8.png",
+                "alt": "Hot Comic 8"
+              }
+            },
+            {
+              "image": {
+                "src": "/imgs/covers/cover-9.png",
+                "alt": "Hot Comic 9"
+              }
+            },
+            {
+              "image": {
+                "src": "/imgs/covers/cover-10.png",
+                "alt": "Hot Comic 10"
+              }
+            },
+            {
+              "image": {
+                "src": "/imgs/covers/cover-11.png",
+                "alt": "Hot Comic 11"
+              }
+            },
+            {
+              "image": {
+                "src": "/imgs/covers/cover-12.png",
+                "alt": "Hot Comic 12"
+              }
+            },
+            {
+              "image": {
+                "src": "/imgs/covers/cover-13.png",
+                "alt": "Hot Comic 13"
+              }
+            },
+            {
+              "image": {
+                "src": "/imgs/covers/cover-14.png",
+                "alt": "Hot Comic 14"
+              }
+            },
+            {
+              "image": {
+                "src": "/imgs/covers/cover-15.png",
+                "alt": "Hot Comic 15"
+              }
+            }
+          ]
         }
       },
-      "logos": {
-        "id": "logos",
-        "title": "ShipAny is built on the shoulders of giants",
+      "discover_more": {
+        "block": "discover-more",
+        "id": "discover-more",
+        "label": "Community",
+        "title": "Discover More",
+        "description": "Short comic drama clips from the community. Hover to preview, click to watch fullscreen.",
         "items": [
           {
-            "title": "Next.js",
-            "image": {
-              "src": "/imgs/logos/nextjs.svg",
-              "alt": "Next.js"
-            }
+            "title": "Clip 01",
+            "src": "/video/demo-1.mp4"
           },
           {
-            "title": "React",
-            "image": {
-              "src": "/imgs/logos/react.svg",
-              "alt": "React"
-            }
+            "title": "Clip 02",
+            "src": "/video/demo-2.mp4"
           },
           {
-            "title": "TailwindCSS",
-            "image": {
-              "src": "/imgs/logos/tailwindcss.svg",
-              "alt": "TailwindCSS"
-            }
+            "title": "Clip 03",
+            "src": "/video/demo-3.mp4"
           },
           {
-            "title": "Shadcn/UI",
-            "image": {
-              "src": "/imgs/logos/shadcn.svg",
-              "alt": "Shadcn/UI"
-            }
+            "title": "Clip 04",
+            "src": "/video/demo-4.mp4"
           },
           {
-            "title": "Vercel",
-            "image": {
-              "src": "/imgs/logos/vercel.svg",
-              "alt": "Vercel"
-            }
+            "title": "Clip 05",
+            "src": "/video/demo-5.mp4"
+          },
+          {
+            "title": "Clip 06",
+            "src": "/video/demo-6.mp4"
+          },
+          {
+            "title": "Clip 07",
+            "src": "/video/demo-7.mp4"
+          },
+          {
+            "title": "Clip 08",
+            "src": "/video/demo-8.mp4"
+          },
+          {
+            "title": "Clip 09",
+            "src": "/video/demo-9.mp4"
+          },
+          {
+            "title": "Clip 10",
+            "src": "/video/demo-10.mp4"
+          },
+          {
+            "title": "Clip 11",
+            "src": "/video/demo-11.mp4"
+          },
+          {
+            "title": "Clip 12",
+            "src": "/video/demo-12.mp4"
+          },
+          {
+            "title": "Clip 13",
+            "src": "/video/demo-13.mp4"
+          },
+          {
+            "title": "Clip 14",
+            "src": "/video/demo-14.mp4"
+          },
+          {
+            "title": "Clip 15",
+            "src": "/video/demo-15.mp4"
+          },
+          {
+            "title": "Clip 16",
+            "src": "/video/demo-16.mp4"
+          },
+          {
+            "title": "Clip 17",
+            "src": "/video/demo-17.mp4"
+          },
+          {
+            "title": "Clip 18",
+            "src": "/video/demo-18.mp4"
+          },
+          {
+            "title": "Clip 19",
+            "src": "/video/demo-19.mp4"
+          },
+          {
+            "title": "Clip 20",
+            "src": "/video/demo-20.mp4"
+          },
+          {
+            "title": "Clip 21",
+            "src": "/video/demo-21.mp4"
+          },
+          {
+            "title": "Clip 22",
+            "src": "/video/demo-22.mp4"
+          },
+          {
+            "title": "Clip 23",
+            "src": "/video/demo-23.mp4"
+          },
+          {
+            "title": "Clip 24",
+            "src": "/video/demo-24.mp4"
+          },
+          {
+            "title": "Clip 25",
+            "src": "/video/demo-25.mp4"
+          },
+          {
+            "title": "Clip 26",
+            "src": "/video/demo-26.mp4"
+          },
+          {
+            "title": "Clip 27",
+            "src": "/video/demo-27.mp4"
+          },
+          {
+            "title": "Clip 28",
+            "src": "/video/demo-28.mp4"
+          },
+          {
+            "title": "Clip 29",
+            "src": "/video/demo-29.mp4"
+          },
+          {
+            "title": "Clip 30",
+            "src": "/video/demo-30.mp4"
+          },
+          {
+            "title": "Clip 31",
+            "src": "/video/demo-31.mp4"
+          },
+          {
+            "title": "Clip 32",
+            "src": "/video/demo-32.mp4"
+          },
+          {
+            "title": "Clip 33",
+            "src": "/video/demo-33.mp4"
+          },
+          {
+            "title": "Clip 34",
+            "src": "/video/demo-34.mp4"
+          },
+          {
+            "title": "Clip 35",
+            "src": "/video/demo-35.mp4"
+          },
+          {
+            "title": "Clip 36",
+            "src": "/video/demo-36.mp4"
+          },
+          {
+            "title": "Clip 37",
+            "src": "/video/demo-37.mp4"
+          },
+          {
+            "title": "Clip 38",
+            "src": "/video/demo-38.mp4"
+          },
+          {
+            "title": "Clip 39",
+            "src": "/video/demo-39.mp4"
+          },
+          {
+            "title": "Clip 40",
+            "src": "/video/demo-40.mp4"
+          },
+          {
+            "title": "Clip 41",
+            "src": "/video/demo-41.mp4"
+          },
+          {
+            "title": "Clip 42",
+            "src": "/video/demo-42.mp4"
+          },
+          {
+            "title": "Clip 43",
+            "src": "/video/demo-43.mp4"
+          },
+          {
+            "title": "Clip 44",
+            "src": "/video/demo-44.mp4"
+          },
+          {
+            "title": "Clip 45",
+            "src": "/video/demo-45.mp4"
+          },
+          {
+            "title": "Clip 46",
+            "src": "/video/demo-46.mp4"
+          },
+          {
+            "title": "Clip 47",
+            "src": "/video/demo-47.mp4"
+          },
+          {
+            "title": "Clip 48",
+            "src": "/video/demo-48.mp4"
+          },
+          {
+            "title": "Clip 49",
+            "src": "/video/demo-49.mp4"
+          },
+          {
+            "title": "Clip 50",
+            "src": "/video/demo-50.mp4"
+          },
+          {
+            "title": "Clip 51",
+            "src": "/video/demo-51.mp4"
           }
         ]
       },
       "introduce": {
         "block": "features-list",
         "id": "introduce",
-        "title": "What is ShipAny",
-        "label": "Introduce",
-        "description": "ShipAny is a NextJS boilerplate for building AI SaaS startups, including templates, components, and documentation.",
+        "title": "What is AI-Manga?",
+        "label": "Overview",
+        "description": "AI-Manga is a one-stop AI creation platform for anime and comic drama lovers, covering the full journey from story to final cut.",
         "image": {
           "src": "/imgs/features/landing-page.png",
           "alt": "introduce"
         },
         "items": [
           {
-            "title": "Ready-to-use Templates",
-            "description": "Choose from dozens of production-ready AI SaaS templates to quickly start your project.",
-            "icon": "RiNextjsFill",
+            "title": "Script & Storyboard",
+            "description": "Turn ideas into structured scripts and scene-by-scene storyboards.",
+            "icon": "PenTool",
             "image": {
               "src": "/imgs/features/1.png",
               "alt": "introduce"
             }
           },
           {
-            "title": "Infrastructure Setup",
-            "description": "Get instant access to scalable infrastructure with best practices built-in.",
-            "icon": "RiDatabase2Line",
+            "title": "Character Consistency",
+            "description": "Generate character sheets and keep faces consistent throughout.",
+            "icon": "User",
             "image": {
               "src": "/imgs/features/2.png",
               "alt": "introduce"
             }
           },
           {
-            "title": "Quick Deployment",
-            "description": "Deploy your AI SaaS application to production in hours, not days.",
-            "icon": "RiCloudyFill",
+            "title": "Manga Style Render",
+            "description": "Choose from multiple manga styles and coloring templates.",
+            "icon": "Palette",
             "image": {
               "src": "/imgs/features/3.png",
               "alt": "introduce"
             }
           },
           {
-            "title": "AI Integration",
-            "description": "Integrate AI into your project with ease using our built-in AI SDK.",
-            "icon": "RiRobot2Line",
+            "title": "Voice & Editing",
+            "description": "AI voice, SFX, and auto-editing to export finished videos.",
+            "icon": "Video",
             "image": {
               "src": "/imgs/features/4.png",
               "alt": "introduce"
@@ -154,32 +401,32 @@
       "benefits": {
         "block": "features-accordion",
         "id": "benefits",
-        "title": "Why Choose ShipAny",
+        "title": "Why choose AI-Manga",
         "label": "Benefits",
-        "description": "Get everything you need to launch your AI startup - from ready-to-use templates to technical support.",
+        "description": "Tools and workflows built for comic drama creators.",
         "items": [
           {
-            "title": "Complete Framework",
-            "description": "Built on Next.js with authentication, payments, and AI integration - everything works out of the box.",
-            "icon": "RiNextjsFill",
+            "title": "All-in-one Workflow",
+            "description": "Finish everything from script to final cut in one place.",
+            "icon": "Layers",
             "image": {
               "src": "/imgs/features/user-billing.png",
               "alt": "benefits"
             }
           },
           {
-            "title": "Rich Templates Library",
-            "description": "Choose from various AI SaaS templates to kickstart your project - chatbots, image generation, and more.",
-            "icon": "RiClapperboardAiLine",
+            "title": "Style Control",
+            "description": "Multiple styles with strong consistency controls.",
+            "icon": "Paintbrush",
             "image": {
               "src": "/imgs/features/admin-settings.png",
               "alt": "benefits"
             }
           },
           {
-            "title": "Technical Guidance",
-            "description": "Get dedicated support and join our developer community to ensure your successful launch.",
-            "icon": "RiCodeFill",
+            "title": "Fast Iteration",
+            "description": "Reusable assets and versioning keep production moving.",
+            "icon": "Sparkles",
             "image": {
               "src": "/imgs/features/landing-page.png",
               "alt": "benefits"
@@ -190,8 +437,8 @@
       "usage": {
         "block": "features-step",
         "id": "usage",
-        "title": "How to Launch with ShipAny",
-        "description": "Get your AI SaaS startup running in three simple steps:",
+        "title": "Create in three simple steps",
+        "description": "From idea to release in three steps.",
         "image": {
           "src": "/imgs/features/1.png",
           "alt": "usage"
@@ -200,32 +447,32 @@
         "text_align": "center",
         "items": [
           {
-            "title": "Get ShipAny",
-            "description": "Buy ShipAny with a one-time payment. Check your email for the code and documentation.",
+            "title": "Enter your story",
+            "description": "Write a short plot or script and let AI structure it.",
             "image": {
               "src": "/imgs/features/5.png",
               "alt": "usage"
             }
           },
           {
-            "title": "Start Your Project",
-            "description": "Read the documentation and clone the code of ShipAny. Start building your AI SaaS startup.",
+            "title": "Generate cast & boards",
+            "description": "Create characters and cinematic storyboards quickly.",
             "image": {
               "src": "/imgs/features/6.png",
               "alt": "usage"
             }
           },
           {
-            "title": "Customize Your Project",
-            "description": "Modify the template with your data and contents. Specific AI functionality needs.",
+            "title": "Voice & edit",
+            "description": "Auto voice, SFX, subtitles, and timing edits.",
             "image": {
               "src": "/imgs/features/7.png",
               "alt": "usage"
             }
           },
           {
-            "title": "Deploy to Production",
-            "description": "Deploy your project to production with a few steps and start serving customers immediately.",
+            "title": "Export & publish",
+            "description": "Export HD videos and publish to your favorite platforms.",
             "image": {
               "src": "/imgs/features/8.png",
               "alt": "usage"
@@ -236,187 +483,60 @@
       },
       "features": {
         "id": "features",
-        "title": "Key Features of ShipAny",
-        "description": "Everything you need to launch your AI SaaS startup quickly and efficiently.",
+        "title": "Core capabilities",
+        "description": "Everything you need to produce comic dramas.",
         "items": [
           {
-            "title": "Next.js Boilerplate",
-            "description": "Production-ready Next.js templates with SEO-friendly structure and i18n support.",
-            "icon": "RiNextjsFill"
+            "title": "Script & Storyboard",
+            "description": "Generate scripts and shot-by-shot boards.",
+            "icon": "FileText"
           },
           {
-            "title": "Authentication & Payments",
-            "description": "Integrated Google OAuth, one-tap login, and Stripe payment processing.",
-            "icon": "RiKey2Fill"
+            "title": "Character Consistency",
+            "description": "Keep character design and expressions aligned.",
+            "icon": "User"
           },
           {
-            "title": "Data Infrastructure",
-            "description": "Built-in Supabase integration for reliable and scalable data storage.",
-            "icon": "RiDatabase2Line"
+            "title": "Manga Style",
+            "description": "Switch styles with flexible render controls.",
+            "icon": "Palette"
           },
           {
-            "title": "One-Click Deployment",
-            "description": "Seamless deployment to Vercel or Cloudflare with automated setup.",
-            "icon": "RiCloudy2Fill"
+            "title": "AI Voice & SFX",
+            "description": "Multi-language voice and ambient sound.",
+            "icon": "Mic"
           },
           {
-            "title": "Business Analytics",
-            "description": "Integrated Google Analytics and Search Console for tracking growth.",
-            "icon": "RiBarChart2Line"
+            "title": "Editing & Subtitles",
+            "description": "Auto edits with clean subtitle layout.",
+            "icon": "Scissors"
           },
           {
-            "title": "AI-Ready Infrastructure",
-            "description": "Pre-configured AI integration with built-in credits system and API sales.",
-            "icon": "RiRobot2Line"
-          }
-        ]
-      },
-      "stats": {
-        "id": "stats",
-        "title": "People Love ShipAny",
-        "description": "for it's easy to use and fast to ship.",
-        "items": [
-          {
-            "title": "999+",
-            "description": "Customers"
-          },
-          {
-            "title": "200+",
-            "description": "Blocks"
-          },
-          {
-            "title": "50+",
-            "description": "Templates"
-          }
-        ],
-        "className": "bg-muted"
-      },
-      "testimonials": {
-        "id": "testimonials",
-        "title": "What Users Say About ShipAny",
-        "description": "Hear from developers and founders who launched their AI startups with ShipAny.",
-        "items": [
-          {
-            "name": "David Chen",
-            "role": "Founder of AIWallpaper.shop",
-            "quote": "ShipAny saved us months of development time. We launched our AI wallpaper business in just 2 days and got our first paying customer within a week!",
-            "image": {
-              "src": "/imgs/avatars/1.png",
-              "alt": "david"
-            }
-          },
-          {
-            "name": "Rachel Kim",
-            "role": "CTO at HeyBeauty.ai",
-            "quote": "The pre-built AI infrastructure is a game-changer. We didn't have to worry about architecture - just focused on our AI beauty tech and went live fast.",
-            "image": {
-              "src": "/imgs/avatars/2.png",
-              "alt": "rachel"
-            }
-          },
-          {
-            "name": "Marcus Thompson",
-            "role": "Solo Developer",
-            "quote": "As a solo developer, ShipAny gave me everything I needed - auth, payments, AI integration, and beautiful UI. Launched my SaaS in a weekend!",
-            "image": {
-              "src": "/imgs/avatars/3.png",
-              "alt": "marcus"
-            }
-          },
-          {
-            "name": "Sofia Garcia",
-            "role": "CEO of Melodisco",
-            "quote": "The templates are production-ready and highly customizable. We built our AI music platform in hours instead of months. Incredible time-to-market!",
-            "image": {
-              "src": "/imgs/avatars/4.png",
-              "alt": "sofia"
-            }
-          },
-          {
-            "name": "James Wilson",
-            "role": "Tech Lead at GPTs.works",
-            "quote": "ShipAny's infrastructure is rock-solid. We scaled from 0 to 10k users without touching the backend. Best investment for our AI startup.",
-            "image": {
-              "src": "/imgs/avatars/5.png",
-              "alt": "james"
-            }
-          },
-          {
-            "name": "Anna Zhang",
-            "role": "Startup Founder",
-            "quote": "From idea to launch in 3 days! ShipAny's templates and deployment tools made it possible to test our AI business concept incredibly fast.",
-            "image": {
-              "src": "/imgs/avatars/6.png",
-              "alt": "anna"
-            }
-          }
-        ]
-      },
-      "faq": {
-        "id": "faq",
-        "title": "Frequently Asked Questions About ShipAny",
-        "description": "Have another question? Contact us on Discord or by email.",
-        "items": [
-          {
-            "question": "What exactly is ShipAny and how does it work?",
-            "answer": "ShipAny is a comprehensive NextJS boilerplate designed specifically for building AI SaaS startups. It provides ready-to-use templates, infrastructure setup, and deployment tools that help you launch your AI business in hours instead of days."
-          },
-          {
-            "question": "Do I need advanced technical skills to use ShipAny?",
-            "answer": "While basic programming knowledge is helpful, ShipAny is designed to be developer-friendly. Our templates and documentation make it easy to get started, even if you're not an expert in AI or cloud infrastructure."
-          },
-          {
-            "question": "What types of AI SaaS can I build with ShipAny?",
-            "answer": "ShipAny supports a wide range of AI applications, from content generation to data analysis tools. Our templates cover popular use cases like AI chatbots, content generators, image processing apps, and more."
-          },
-          {
-            "question": "How long does it typically take to launch with ShipAny?",
-            "answer": "With ShipAny, you can have a working prototype in hours and a production-ready application in hours. Our one-click deployment and pre-configured infrastructure significantly reduce the traditional months-long development cycle."
-          },
-          {
-            "question": "What's included in the ShipAny infrastructure?",
-            "answer": "ShipAny provides a complete infrastructure stack including authentication, database setup, API integration, payment processing, and scalable cloud deployment. Everything is pre-configured following industry best practices."
-          },
-          {
-            "question": "Can I customize the templates to match my brand?",
-            "answer": "Absolutely! All ShipAny templates are fully customizable. You can modify the design, features, and functionality to match your brand identity and specific business requirements while maintaining the robust underlying infrastructure."
+            "title": "Collaboration",
+            "description": "Versioning and team-friendly workflows.",
+            "icon": "Layers"
           }
         ]
       },
       "cta": {
         "id": "cta",
-        "title": "Ship your first AI SaaS Startup",
-        "description": "Start from here, ship with ShipAny.",
+        "title": "Create your first AI comic drama",
+        "description": "Turn your ideas into publish-ready comic drama videos with AI-Manga.",
         "buttons": [
           {
-            "title": "Get ShipAny",
-            "url": "https://shipany.ai",
-            "target": "_blank",
+            "title": "Start Creating",
+            "url": "/pricing",
+            "target": "_self",
             "icon": "Zap"
           },
           {
-            "title": "Read Document",
-            "url": "/docs",
-            "target": "_blank",
+            "title": "View Pricing",
+            "url": "/pricing",
+            "target": "_self",
             "variant": "outline",
-            "icon": "BookOpenText"
+            "icon": "CreditCard"
           }
         ],
-        "className": "bg-muted"
-      },
-      "subscribe": {
-        "id": "subscribe",
-        "title": "Subscribe to our newsletter",
-        "description": "Get the latest news and updates from ShipAny.",
-        "submit": {
-          "input": {
-            "placeholder": "Enter your email"
-          },
-          "button": {
-            "title": "Subscribe"
-          },
-          "action": "/api/subscribe"
-        },
         "className": "bg-muted"
       }
     }
