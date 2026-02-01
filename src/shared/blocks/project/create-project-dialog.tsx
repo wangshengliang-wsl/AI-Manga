@@ -102,7 +102,7 @@ export function CreateProjectDialog({
         <ScrollArea className="max-h-[calc(90vh-200px)]">
           <div className="space-y-8 p-8">
             {/* 基本信息区块 */}
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="space-y-6">
               {/* 项目名称 */}
               <div className="space-y-3">
                 <Label htmlFor="name" className="text-sm font-medium">
@@ -121,7 +121,7 @@ export function CreateProjectDialog({
               {/* 画幅比 */}
               <div className="space-y-3">
                 <Label className="text-sm font-medium">画幅比例</Label>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 gap-3">
                   <button
                     type="button"
                     onClick={() => setAspectRatio('16:9')}
