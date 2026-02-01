@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { PrismaticBurst } from '@/shared/components/magicui/prismatic-burst';
 
 const LOADING_MESSAGES = [
   'AI 是笔，创意是墨，故事永远由你书写。',
@@ -23,7 +24,9 @@ type LoaderState = 'pending' | 'visible' | 'exiting' | 'hidden';
 
 export function PageLoader() {
   const [state, setState] = useState<LoaderState>('pending');
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(() =>
+    Math.floor(Math.random() * LOADING_MESSAGES.length),
+  );
   const startTimeRef = useRef<number>(0);
 
   useEffect(() => {
@@ -69,12 +72,26 @@ export function PageLoader() {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-background"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black"
       initial={{ opacity: 1 }}
       animate={{ opacity: state === 'exiting' ? 0 : 1 }}
       transition={{ duration: EXIT_DURATION / 1000, ease: 'easeInOut' }}
     >
-      <div className="flex h-20 items-center justify-center px-6">
+      {/* Background: PrismaticBurst WebGL animation */}
+      <div className="absolute inset-0">
+        <PrismaticBurst
+          animationType="rotate3d"
+          distort={10}
+          intensity={1.5}
+          speed={0.5}
+          colors={['#4F46E5', '#8B5CF6', '#EC4899', '#14B8A6']}
+          paused={state === 'exiting'}
+          mixBlendMode="normal"
+        />
+      </div>
+
+      {/* Content: Text messages */}
+      <div className="relative z-10 flex h-20 items-center justify-center px-6">
         <AnimatePresence mode="wait">
           <motion.p
             key={currentIndex}

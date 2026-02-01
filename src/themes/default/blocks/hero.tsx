@@ -190,11 +190,11 @@ export function Hero({
                   <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background via-background/80 to-transparent" />
                   <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background via-background/80 to-transparent" />
 
-                  <div className="flex w-max gap-3 [--duration:35s] [--gap:0.75rem] group-hover/carousel:[animation-play-state:paused]">
-                    {[0, 1].map((repeatIdx) => (
+                  <div className="flex [gap:var(--gap)] [--duration:35s] [--gap:0.75rem] group-hover/carousel:[animation-play-state:paused]">
+                    {Array.from({ length: 4 }, (_, repeatIdx) => (
                       <div
                         key={`hot-comics-row-${repeatIdx}`}
-                        className="flex w-max shrink-0 gap-3 animate-marquee"
+                        className="flex shrink-0 [gap:var(--gap)] animate-marquee"
                       >
                         {hotComics.map((item: any, idx: number) => {
                           const src =
