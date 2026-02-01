@@ -32,6 +32,11 @@
   "top_nav": {
     "items": [
       {
+        "title": "Projects",
+        "url": "/projects",
+        "icon": "Film"
+      },
+      {
         "title": "Activity",
         "url": "/activity",
         "icon": "Activity"

@@ -32,6 +32,11 @@
   "top_nav": {
     "items": [
       {
+        "title": "项目",
+        "url": "/projects",
+        "icon": "Film"
+      },
+      {
         "title": "活动",
         "url": "/activity",
         "icon": "Activity"
