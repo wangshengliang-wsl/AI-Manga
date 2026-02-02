@@ -1,49 +1,74 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
 import { FileQuestion } from 'lucide-react';
 
 import { Link } from '@/core/i18n/navigation';
 import { Button } from '@/shared/components/ui/button';
-
-import {
-  getProjectById,
-  mockCharacters,
-  Project,
-} from './mock-data';
+import { Project, deleteProject, getProjectInfo } from '@/shared/api/project';
 import { ProjectNavbar, ProjectStep } from './project-navbar';
 import { StorySettings } from './story-settings';
 import { StoryboardSettings } from './storyboard-settings';
+import { StorySettingsSkeleton } from '@/shared/components/skeleton/story-settings-skeleton';
+import { StoryboardCardSkeleton } from '@/shared/components/skeleton/storyboard-card-skeleton';
+import { toast } from 'sonner';
+import { getErrorMessage } from '@/shared/lib/error';
 
 export default function ProjectDetailPage() {
   const params = useParams();
   const projectId = params.id as string;
+  const router = useRouter();
 
   const [activeStep, setActiveStep] = useState<ProjectStep>('story');
+  const [project, setProject] = useState<Project | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  const project = useMemo<Project | undefined>(() => {
-    const found = getProjectById(projectId);
-    if (found) return found;
+  useEffect(() => {
+    let active = true;
+    const fetchProject = async () => {
+      try {
+        setLoading(true);
+        const data = await getProjectInfo(projectId);
+        if (!active) return;
+        setProject(data);
+      } catch (error) {
+        if (!active) return;
+        setNotFound(true);
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('fetch project failed:', error);
+        }
+      } finally {
+        if (active) setLoading(false);
+      }
+    };
 
-    if (projectId.startsWith('proj-')) {
-      return {
-        id: projectId,
-        name: '新项目',
-        coverUrl: 'https://picsum.photos/seed/new/800/450',
-        aspectRatio: '16:9',
-        styleId: 1,
-        description: '',
-        updatedAt: new Date().toISOString(),
-      };
-    }
-
-    return undefined;
+    fetchProject();
+    return () => {
+      active = false;
+    };
   }, [projectId]);
 
-  const [outline, setOutline] = useState(project?.description || '');
+  const handleDeleteProject = async () => {
+    if (!project) return;
+    try {
+      setIsDeleting(true);
+      await deleteProject(project.id);
+      toast.success('项目已删除');
+      router.push('/projects');
+    } catch (error) {
+      toast.error(getErrorMessage(error, '删除项目失败'));
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('delete project failed:', error);
+      }
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
-  if (!project) {
+  if (notFound && !loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="flex flex-col items-center gap-4 text-center">
@@ -69,21 +94,31 @@ export default function ProjectDetailPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/10">
       <ProjectNavbar
-        projectName={project.name}
+        projectName={project?.name || '加载中...'}
         activeStep={activeStep}
         onStepChange={setActiveStep}
+        onDeleteProject={handleDeleteProject}
+        deleteDisabled={!project || isDeleting}
       />
 
       <main className="container max-w-7xl py-8 lg:py-10">
-        {activeStep === 'story' ? (
+        {loading || !project ? (
+          activeStep === 'story' ? (
+            <StorySettingsSkeleton />
+          ) : (
+            <div className="space-y-4">
+              {Array.from({ length: 3 }).map((_, index) => (
+                <StoryboardCardSkeleton key={`storyboard-loading-${index}`} />
+              ))}
+            </div>
+          )
+        ) : activeStep === 'story' ? (
           <StorySettings
             project={project}
-            outline={outline}
-            onOutlineChange={setOutline}
-            characters={mockCharacters}
+            onProjectUpdated={(next) => setProject(next)}
           />
         ) : (
-          <StoryboardSettings project={project} characters={mockCharacters} />
+          <StoryboardSettings project={project} />
         )}
       </main>
     </div>

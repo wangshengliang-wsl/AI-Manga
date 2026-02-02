@@ -5,10 +5,11 @@ import { Clock, Film } from 'lucide-react';
 
 import { Link } from '@/core/i18n/navigation';
 import { cn } from '@/shared/lib/utils';
-import { Project } from './mock-data';
+import { Project } from '@/shared/api/project';
 
 function formatRelativeTime(dateStr: string): string {
   const date = new Date(dateStr);
+  if (Number.isNaN(date.getTime())) return '-';
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
@@ -33,19 +34,31 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {
-  const isVertical = project.aspectRatio === '9:16';
+  const statusLabelMap: Record<string, string> = {
+    draft: '草稿',
+    initializing: '初始化中',
+    ready: '可用',
+    archived: '已归档',
+  };
+  const statusLabel = statusLabelMap[project.status] || project.status;
 
   return (
     <Link href={`/project/${project.id}`} className="group block">
       <div className="relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-b from-card to-card/80 shadow-sm transition-all duration-500 ease-out hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1">
         {/* 封面图区域 */}
         <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted/50">
-          <Image
-            src={project.coverUrl}
-            alt={project.name}
-            fill
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-          />
+          {project.coverImageUrl ? (
+            <Image
+              src={project.coverImageUrl}
+              alt={project.name}
+              fill
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-muted/60 to-muted/30 text-xs text-muted-foreground">
+              暂无封面
+            </div>
+          )}
           {/* 渐变遮罩 */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
@@ -58,6 +71,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
             )}>
               <Film className="h-3 w-3" />
               <span>{project.aspectRatio}</span>
+            </div>
+          </div>
+
+          <div className="absolute left-3 top-3">
+            <div className="rounded-full bg-black/40 px-2.5 py-1 text-xs font-medium text-white/90 backdrop-blur-md">
+              {statusLabel}
             </div>
           </div>
         </div>

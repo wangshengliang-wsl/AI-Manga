@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { PrismaticBurst } from '@/shared/components/magicui/prismatic-burst';
+import { useTheme } from 'next-themes';
 
 const LOADING_MESSAGES = [
   'AI 是笔，创意是墨，故事永远由你书写。',
@@ -27,7 +28,22 @@ export function PageLoader() {
   const [currentIndex, setCurrentIndex] = useState(() =>
     Math.floor(Math.random() * LOADING_MESSAGES.length),
   );
+  const [themeColors, setThemeColors] = useState<string[]>([
+    '#a78bfa', '#c4b5fd', '#f0abfc', '#a7f3d0',
+  ]);
   const startTimeRef = useRef<number>(0);
+  const { resolvedTheme } = useTheme();
+
+  const getLoaderColors = useCallback((): string[] => {
+    if (resolvedTheme === 'dark') {
+      return ['#818cf8', '#a78bfa', '#e879f9', '#6ee7b7'];
+    }
+    return ['#a78bfa', '#c4b5fd', '#f0abfc', '#a7f3d0'];
+  }, [resolvedTheme]);
+
+  useEffect(() => {
+    setThemeColors(getLoaderColors());
+  }, [getLoaderColors]);
 
   useEffect(() => {
     startTimeRef.current = Date.now();
@@ -72,7 +88,8 @@ export function PageLoader() {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black"
+      className="fixed inset-0 z-[9999] flex items-center justify-center"
+      style={{ backgroundColor: 'var(--loader-bg)' }}
       initial={{ opacity: 1 }}
       animate={{ opacity: state === 'exiting' ? 0 : 1 }}
       transition={{ duration: EXIT_DURATION / 1000, ease: 'easeInOut' }}
@@ -84,7 +101,7 @@ export function PageLoader() {
           distort={10}
           intensity={1.5}
           speed={0.5}
-          colors={['#4F46E5', '#8B5CF6', '#EC4899', '#14B8A6']}
+          colors={themeColors}
           paused={state === 'exiting'}
           mixBlendMode="normal"
         />
@@ -95,7 +112,11 @@ export function PageLoader() {
         <AnimatePresence mode="wait">
           <motion.p
             key={currentIndex}
-            className="text-center text-lg font-medium text-white md:text-xl lg:text-2xl"
+            className="text-center text-lg font-medium md:text-xl lg:text-2xl"
+            style={{
+              color: '#ffffff',
+              textShadow: '0 2px 10px rgba(0,0,0,0.5), 0 0 30px rgba(0,0,0,0.3)',
+            }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}

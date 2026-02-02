@@ -19,8 +19,10 @@ import { ScrollArea } from '@/shared/components/ui/scroll-area';
 import { Textarea } from '@/shared/components/ui/textarea';
 import { cn } from '@/shared/lib/utils';
 import styles from '@/shared/styles/index.json';
+import { toast } from 'sonner';
+import { getErrorMessage } from '@/shared/lib/error';
 
-import { generateProjectId, Project } from './mock-data';
+import { createProject, Project } from '@/shared/api/project';
 
 interface CreateProjectDialogProps {
   open: boolean;
@@ -53,28 +55,32 @@ export function CreateProjectDialog({
     }
 
     setIsSubmitting(true);
+    try {
+      const newProject = await createProject({
+        name: name.trim(),
+        description: description.trim(),
+        aspectRatio,
+        styleId: selectedStyleId,
+      });
 
-    const selectedStyle = (styles as Style[]).find((s) => s.id === selectedStyleId);
-    const newProject: Project = {
-      id: generateProjectId(),
-      name: name.trim(),
-      coverUrl: selectedStyle?.url || 'https://picsum.photos/seed/new/800/450',
-      aspectRatio,
-      styleId: selectedStyleId,
-      description: description.trim(),
-      updatedAt: new Date().toISOString(),
-    };
+      toast.success('项目创建成功');
+      onProjectCreated?.(newProject);
+      onOpenChange(false);
 
-    onProjectCreated?.(newProject);
-    onOpenChange(false);
+      setName('');
+      setDescription('');
+      setAspectRatio('16:9');
+      setSelectedStyleId(null);
 
-    setName('');
-    setDescription('');
-    setAspectRatio('16:9');
-    setSelectedStyleId(null);
-    setIsSubmitting(false);
-
-    router.push(`/project/${newProject.id}`);
+      router.push(`/project/${newProject.id}`);
+    } catch (error) {
+      toast.error(getErrorMessage(error, '创建项目失败'));
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('create project failed:', error);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const isValid = name.trim().length > 0 && selectedStyleId !== null;

@@ -14,7 +14,8 @@ type RaysOrigin =
   | 'right'
   | 'bottom-left'
   | 'bottom-center'
-  | 'bottom-right';
+  | 'bottom-right'
+  | 'center';
 
 interface LightRaysProps extends ComponentPropsWithoutRef<'div'> {
   raysOrigin?: RaysOrigin;
@@ -59,6 +60,8 @@ const getAnchorAndDir = (
       return { anchor: [0.5 * w, (1 + outside) * h], dir: [0, -1] };
     case 'bottom-right':
       return { anchor: [w, (1 + outside) * h], dir: [0, -1] };
+    case 'center':
+      return { anchor: [0.5 * w, 0.5 * h], dir: [0, 1] };
     default: // "top-center"
       return { anchor: [0.5 * w, -outside * h], dir: [0, 1] };
   }
@@ -80,6 +83,7 @@ interface Uniforms {
   mouseInfluence: { value: number };
   noiseAmount: { value: number };
   distortion: { value: number };
+  centerMode: { value: number };
 }
 
 export function LightRays({
@@ -186,6 +190,7 @@ uniform vec2  mousePos;
 uniform float mouseInfluence;
 uniform float noiseAmount;
 uniform float distortion;
+uniform float centerMode;
 
 varying vec2 vUv;
 
@@ -222,21 +227,46 @@ float rayStrength(vec2 raySource, vec2 rayRefDirection, vec2 coord,
 void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   vec2 coord = vec2(fragCoord.x, iResolution.y - fragCoord.y);
 
-  vec2 finalRayDir = rayDir;
-  if (mouseInfluence > 0.0) {
-    vec2 mouseScreenPos = mousePos * iResolution.xy;
-    vec2 mouseDirection = normalize(mouseScreenPos - rayPos);
-    finalRayDir = normalize(mix(rayDir, mouseDirection, mouseInfluence));
+  vec4 rays = vec4(0.0);
+
+  if (centerMode > 0.5) {
+    // Center mode: emit rays in all directions from center
+    float angle = atan(coord.y - rayPos.y, coord.x - rayPos.x);
+    vec2 centerDir = vec2(cos(angle + iTime * raysSpeed * 0.3), sin(angle + iTime * raysSpeed * 0.3));
+
+    float distance = length(coord - rayPos);
+    float maxDist = iResolution.x * rayLength;
+    float falloff = clamp((maxDist - distance) / maxDist, 0.0, 1.0);
+
+    float pulse = pulsating > 0.5 ? (0.85 + 0.15 * sin(iTime * raysSpeed * 2.0)) : 1.0;
+
+    // Create radial ray pattern
+    float rayPattern = 0.45 + 0.25 * sin(angle * 8.0 + iTime * raysSpeed) + 0.15 * cos(angle * 12.0 - iTime * raysSpeed * 0.7);
+
+    // Add some noise/distortion
+    rayPattern += distortion * 0.1 * sin(distance * 0.01 - iTime * 2.0);
+
+    rays = vec4(rayPattern * falloff * pulse);
+  } else {
+    // Original mode: directional rays from edge
+    vec2 finalRayDir = rayDir;
+    if (mouseInfluence > 0.0) {
+      vec2 mouseScreenPos = mousePos * iResolution.xy;
+      vec2 mouseDirection = normalize(mouseScreenPos - rayPos);
+      finalRayDir = normalize(mix(rayDir, mouseDirection, mouseInfluence));
+    }
+
+    vec4 rays1 = vec4(1.0) *
+                 rayStrength(rayPos, finalRayDir, coord, 36.2214, 21.11349,
+                             1.5 * raysSpeed);
+    vec4 rays2 = vec4(1.0) *
+                 rayStrength(rayPos, finalRayDir, coord, 22.3991, 18.0234,
+                             1.1 * raysSpeed);
+
+    rays = rays1 * 0.5 + rays2 * 0.4;
   }
 
-  vec4 rays1 = vec4(1.0) *
-               rayStrength(rayPos, finalRayDir, coord, 36.2214, 21.11349,
-                           1.5 * raysSpeed);
-  vec4 rays2 = vec4(1.0) *
-               rayStrength(rayPos, finalRayDir, coord, 22.3991, 18.0234,
-                           1.1 * raysSpeed);
-
-  fragColor = rays1 * 0.5 + rays2 * 0.4;
+  fragColor = rays;
 
   if (noiseAmount > 0.0) {
     float n = noise(coord * 0.01 + iTime * 0.1);
@@ -278,6 +308,7 @@ void main() {
         mouseInfluence: { value: mouseInfluence },
         noiseAmount: { value: noiseAmount },
         distortion: { value: distortion },
+        centerMode: { value: raysOrigin === 'center' ? 1.0 : 0.0 },
       };
       uniformsRef.current = uniforms;
 
@@ -410,6 +441,7 @@ void main() {
     u.mouseInfluence.value = mouseInfluence;
     u.noiseAmount.value = noiseAmount;
     u.distortion.value = distortion;
+    u.centerMode.value = raysOrigin === 'center' ? 1.0 : 0.0;
 
     const { clientWidth: wCSS, clientHeight: hCSS } = containerRef.current;
     const dpr = renderer.dpr;

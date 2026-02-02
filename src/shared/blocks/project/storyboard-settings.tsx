@@ -1,53 +1,205 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Sparkles, Clapperboard, RefreshCw, Wand2 } from 'lucide-react';
 
 import { Button } from '@/shared/components/ui/button';
-
-import { Character, mockStoryboards, Project, Storyboard } from './mock-data';
+import {
+  Storyboard,
+  deleteStoryboard,
+  generateStoryboards,
+  getStoryboardList,
+  generateStoryboardImage,
+  generateStoryboardVideo,
+} from '@/shared/api/storyboard';
+import { Character, getCharacterList } from '@/shared/api/character';
+import { Project } from '@/shared/api/project';
 import { StoryboardCard } from './storyboard-card';
+import { StoryboardCardSkeleton } from '@/shared/components/skeleton/storyboard-card-skeleton';
+import { toast } from 'sonner';
+import { getErrorMessage } from '@/shared/lib/error';
 
 interface StoryboardSettingsProps {
   project: Project;
-  characters: Character[];
 }
 
-export function StoryboardSettings({
-  project,
-  characters,
-}: StoryboardSettingsProps) {
+export function StoryboardSettings({ project }: StoryboardSettingsProps) {
+  const initialVisibleCount = 6;
   const [storyboards, setStoryboards] = useState<Storyboard[]>([]);
+  const [characters, setCharacters] = useState<Character[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [visibleCount, setVisibleCount] = useState(initialVisibleCount);
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
+  const fetchStoryboards = useCallback(async () => {
+    try {
+      setLoading(true);
+      const list = await getStoryboardList(project.id);
+      setStoryboards(list);
+      setVisibleCount((prev) =>
+        Math.min(Math.max(prev, initialVisibleCount), list.length)
+      );
+    } catch (error) {
+      toast.error(getErrorMessage(error, '获取分镜失败'));
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('fetch storyboards failed:', error);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [project.id]);
+
+  const fetchCharacters = useCallback(async () => {
+    try {
+      const list = await getCharacterList(project.id);
+      setCharacters(list);
+    } catch (error) {
+      toast.error(getErrorMessage(error, '获取角色失败'));
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('fetch characters failed:', error);
+      }
+    }
+  }, [project.id]);
+
+  useEffect(() => {
+    fetchStoryboards();
+    fetchCharacters();
+  }, [fetchStoryboards, fetchCharacters]);
+
+  useEffect(() => {
+    if (
+      storyboards.some(
+        (sb) => sb.imageStatus === 'generating' || sb.videoStatus === 'generating'
+      )
+    ) {
+      const timer = setInterval(() => fetchStoryboards(), 4000);
+      return () => clearInterval(timer);
+    }
+    return undefined;
+  }, [storyboards, fetchStoryboards]);
 
   const handleGenerateStoryboards = async () => {
-    setIsGenerating(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setStoryboards(mockStoryboards);
-    setIsGenerating(false);
+    try {
+      setIsGenerating(true);
+      const list = await generateStoryboards(project.id, 5);
+      setStoryboards(list);
+      setVisibleCount((prev) =>
+        Math.min(Math.max(prev, initialVisibleCount), list.length)
+      );
+      toast.success('分镜生成完成');
+    } catch (error) {
+      toast.error(getErrorMessage(error, '分镜生成失败'));
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('generate storyboards failed:', error);
+      }
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
-  const handleEditImagePrompt = (storyboard: Storyboard) => {
-    console.log('Edit image prompt for:', storyboard.id);
+  const handleGenerateImage = async (storyboardId: string) => {
+    try {
+      await generateStoryboardImage(storyboardId);
+      toast.success('分镜图生成已开始');
+      setStoryboards((prev) =>
+        prev.map((sb) =>
+          sb.id === storyboardId ? { ...sb, imageStatus: 'generating' } : sb
+        )
+      );
+    } catch (error) {
+      toast.error(getErrorMessage(error, '分镜图生成失败'));
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('generate storyboard image failed:', error);
+      }
+    }
   };
 
-  const handleEditVideoPrompt = (storyboard: Storyboard) => {
-    console.log('Edit video prompt for:', storyboard.id);
+  const handleGenerateVideo = async (storyboardId: string) => {
+    try {
+      await generateStoryboardVideo(storyboardId);
+      toast.success('分镜视频生成已开始');
+      setStoryboards((prev) =>
+        prev.map((sb) =>
+          sb.id === storyboardId ? { ...sb, videoStatus: 'generating' } : sb
+        )
+      );
+    } catch (error) {
+      toast.error(getErrorMessage(error, '分镜视频生成失败'));
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('generate storyboard video failed:', error);
+      }
+    }
   };
 
-  if (storyboards.length === 0) {
+  const handleDeleteStoryboard = async (storyboardId: string) => {
+    try {
+      setDeletingId(storyboardId);
+      await deleteStoryboard(storyboardId);
+      toast.success('分镜已删除');
+      setStoryboards((prev) => {
+        const next = prev.filter((sb) => sb.id !== storyboardId);
+        setVisibleCount((current) => Math.min(current, next.length));
+        return next;
+      });
+    } catch (error) {
+      toast.error(getErrorMessage(error, '删除分镜失败'));
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('delete storyboard failed:', error);
+      }
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
+  const hasStoryboards = storyboards.length > 0;
+  const totalStoryboards = storyboards.length;
+  const visibleStoryboards = useMemo(
+    () => storyboards.slice(0, visibleCount),
+    [storyboards, visibleCount]
+  );
+  const hasMore = visibleCount < storyboards.length;
+
+  useEffect(() => {
+    if (!hasMore) return;
+    const target = loadMoreRef.current;
+    if (!target) return;
+
+    // Progressive rendering to keep large storyboard lists responsive.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setVisibleCount((prev) => Math.min(prev + 4, storyboards.length));
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [hasMore, storyboards.length]);
+
+  if (loading) {
+    return (
+      <div className="space-y-5">
+        {Array.from({ length: 3 }).map((_, index) => (
+          <StoryboardCardSkeleton key={`storyboard-skeleton-${index}`} />
+        ))}
+      </div>
+    );
+  }
+
+  if (!hasStoryboards) {
     return (
       <div className="relative overflow-hidden rounded-3xl border border-dashed border-border/60 bg-gradient-to-b from-muted/40 via-muted/20 to-transparent">
-        {/* 背景装饰 */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
           <div className="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
-          {/* 网格装饰 */}
           <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent_0%,transparent_49%,rgba(var(--border)/0.3)_50%,transparent_51%,transparent_100%),linear-gradient(to_bottom,transparent_0%,transparent_49%,rgba(var(--border)/0.3)_50%,transparent_51%,transparent_100%)] bg-[size:60px_60px]" />
         </div>
 
         <div className="relative flex flex-col items-center px-8 py-24 text-center">
-          {/* 图标 */}
           <div className="relative mb-6">
             <div className="flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-primary/20 via-primary/10 to-transparent shadow-inner">
               <Clapperboard className="h-12 w-12 text-primary/70" />
@@ -57,7 +209,6 @@ export function StoryboardSettings({
             </div>
           </div>
 
-          {/* 标题 */}
           <h3 className="mb-3 text-2xl font-semibold tracking-tight">
             开始创建分镜
           </h3>
@@ -65,7 +216,6 @@ export function StoryboardSettings({
             AI 将根据故事大纲自动生成专业分镜脚本，包含场景描述、角色对话和画面构图建议
           </p>
 
-          {/* 按钮 */}
           <Button
             size="lg"
             onClick={handleGenerateStoryboards}
@@ -91,7 +241,6 @@ export function StoryboardSettings({
 
   return (
     <div className="space-y-6">
-      {/* 头部 */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
@@ -100,7 +249,7 @@ export function StoryboardSettings({
           <div>
             <h3 className="text-lg font-semibold tracking-tight">分镜列表</h3>
             <p className="text-xs text-muted-foreground">
-              共 {storyboards.length} 个分镜
+              共 {totalStoryboards} 个分镜
             </p>
           </div>
         </div>
@@ -124,9 +273,8 @@ export function StoryboardSettings({
         </Button>
       </div>
 
-      {/* 分镜列表 */}
       <div className="space-y-5">
-        {storyboards.map((storyboard, index) => (
+        {visibleStoryboards.map((storyboard, index) => (
           <div
             key={storyboard.id}
             className="animate-in fade-in slide-in-from-bottom-4"
@@ -135,13 +283,29 @@ export function StoryboardSettings({
             <StoryboardCard
               storyboard={storyboard}
               index={index}
-              aspectRatio={project.aspectRatio}
+              aspectRatio={project.aspectRatio as any}
               characters={characters}
-              onEditImagePrompt={handleEditImagePrompt}
-              onEditVideoPrompt={handleEditVideoPrompt}
+              onGenerateImage={handleGenerateImage}
+              onGenerateVideo={handleGenerateVideo}
+              onDelete={handleDeleteStoryboard}
+              deleteDisabled={deletingId === storyboard.id}
             />
           </div>
         ))}
+
+        {hasMore ? (
+          <div ref={loadMoreRef} className="flex justify-center pt-2">
+            <Button
+              variant="outline"
+              className="rounded-xl"
+              onClick={() =>
+                setVisibleCount((prev) => Math.min(prev + 4, storyboards.length))
+              }
+            >
+              加载更多分镜
+            </Button>
+          </div>
+        ) : null}
       </div>
     </div>
   );

@@ -2,10 +2,12 @@ import {
   boolean,
   index,
   integer,
+  jsonb,
   pgSchema,
   pgTable,
   text,
   timestamp,
+  uniqueIndex,
 } from 'drizzle-orm/pg-core';
 
 import { envConfigs } from '@/config';
@@ -553,5 +555,144 @@ export const chatMessage = table(
   (table) => [
     index('idx_chat_message_chat_id').on(table.chatId, table.status),
     index('idx_chat_message_user_id').on(table.userId, table.status),
+  ]
+);
+
+export const project = table(
+  'project',
+  {
+    id: text('id').primaryKey(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    name: text('name').notNull(),
+    description: text('description'),
+    coverImageUrl: text('cover_image_url'),
+    aspectRatio: text('aspect_ratio').notNull().default('16:9'),
+    styleId: integer('style_id').notNull().default(1),
+    storyOutline: text('story_outline'),
+    status: text('status').notNull().default('draft'),
+    initStatus: text('init_status').notNull().default('pending'),
+    initError: text('init_error'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+    deletedAt: timestamp('deleted_at'),
+  },
+  (table) => [
+    index('idx_project_user_status').on(table.userId, table.status),
+    index('idx_project_created_at').on(table.createdAt),
+  ]
+);
+
+export const character = table(
+  'character',
+  {
+    id: text('id').primaryKey(),
+    projectId: text('project_id')
+      .notNull()
+      .references(() => project.id, { onDelete: 'cascade' }),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    name: text('name').notNull(),
+    description: text('description'),
+    imageUrl: text('image_url'),
+    imagePrompt: text('image_prompt'),
+    traits: jsonb('traits'),
+    status: text('status').notNull().default('pending'),
+    taskId: text('task_id'),
+    taskError: text('task_error'),
+    sortOrder: integer('sort_order').default(0).notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+    deletedAt: timestamp('deleted_at'),
+  },
+  (table) => [
+    index('idx_character_project').on(table.projectId),
+    index('idx_character_user').on(table.userId),
+    index('idx_character_task').on(table.taskId),
+  ]
+);
+
+export const storyboard = table(
+  'storyboard',
+  {
+    id: text('id').primaryKey(),
+    projectId: text('project_id')
+      .notNull()
+      .references(() => project.id, { onDelete: 'cascade' }),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    sortOrder: integer('sort_order').default(0).notNull(),
+    description: text('description'),
+    characterIds: jsonb('character_ids').default([]),
+    imageUrl: text('image_url'),
+    imagePrompt: text('image_prompt'),
+    imageStatus: text('image_status').default('pending'),
+    imageTaskId: text('image_task_id'),
+    imageError: text('image_error'),
+    videoUrl: text('video_url'),
+    videoPrompt: text('video_prompt'),
+    videoStatus: text('video_status').default('pending'),
+    videoTaskId: text('video_task_id'),
+    videoError: text('video_error'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+    deletedAt: timestamp('deleted_at'),
+  },
+  (table) => [
+    index('idx_storyboard_project').on(table.projectId, table.sortOrder),
+    index('idx_storyboard_user').on(table.userId),
+    index('idx_storyboard_image_task').on(table.imageTaskId),
+    index('idx_storyboard_video_task').on(table.videoTaskId),
+  ]
+);
+
+export const generationTask = table(
+  'generation_task',
+  {
+    id: text('id').primaryKey(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    projectId: text('project_id').references(() => project.id, {
+      onDelete: 'cascade',
+    }),
+    targetType: text('target_type').notNull(),
+    targetId: text('target_id').notNull(),
+    taskId: text('task_id').notNull(),
+    model: text('model').notNull(),
+    prompt: text('prompt').notNull(),
+    options: jsonb('options'),
+    status: text('status').notNull().default('pending'),
+    resultUrl: text('result_url'),
+    storedUrl: text('stored_url'),
+    errorCode: text('error_code'),
+    errorMessage: text('error_message'),
+    pollCount: integer('poll_count').notNull().default(0),
+    lastPolledAt: timestamp('last_polled_at'),
+    callbackReceivedAt: timestamp('callback_received_at'),
+    callbackData: jsonb('callback_data'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+  },
+  (table) => [
+    index('idx_generation_task_status').on(table.status),
+    uniqueIndex('uniq_generation_task_task_id').on(table.taskId),
+    index('idx_generation_task_target').on(table.targetType, table.targetId),
+    index('idx_generation_task_project').on(table.projectId),
   ]
 );
