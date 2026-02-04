@@ -2,13 +2,14 @@
 
 import { isArray } from 'util';
 import { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { useRouter } from '@/core/i18n/navigation';
+import { locales } from '@/config/locale';
 import { SmartIcon } from '@/shared/blocks/common/smart-icon';
 import { Button } from '@/shared/components/ui/button';
 import {
@@ -204,6 +205,7 @@ export function Form({
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
+  const pathname = usePathname();
   const FormSchema = generateFormSchema(fields);
   const defaultValues: Record<string, any> = {};
 
@@ -310,7 +312,18 @@ export function Form({
       }
 
       if (res.redirect_url) {
-        router.push(res.redirect_url as any);
+        const url = String(res.redirect_url);
+        const currentLocale = pathname?.split('/')[1];
+        const hasLocale = currentLocale && locales.includes(currentLocale);
+        const normalizedUrl =
+          /^https?:\/\//i.test(url) ||
+          !hasLocale ||
+          url.startsWith(`/${currentLocale}`)
+            ? url
+            : url.startsWith('/')
+              ? `/${currentLocale}${url}`
+              : `/${currentLocale}/${url}`;
+        router.push(normalizedUrl as any);
       }
 
       setLoading(false);
