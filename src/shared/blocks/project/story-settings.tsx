@@ -1,30 +1,44 @@
 'use client';
 
-import Image from 'next/image';
-import { ImageIcon, Users, Edit3, Sparkles, RefreshCw } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import Image from 'next/image';
+import { Edit3, ImageIcon, RefreshCw, Sparkles, Users } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { Textarea } from '@/shared/components/ui/textarea';
+import {
+  Character,
+  getCharacterList,
+  regenerateCharacterImage,
+} from '@/shared/api/character';
+import {
+  getInitStatus,
+  getProjectInfo,
+  initStory,
+  Project,
+} from '@/shared/api/project';
 import { Button } from '@/shared/components/ui/button';
-import { cn } from '@/shared/lib/utils';
-import { Character, getCharacterList, regenerateCharacterImage } from '@/shared/api/character';
-import { getInitStatus, initStory, Project, getProjectInfo } from '@/shared/api/project';
+import { Textarea } from '@/shared/components/ui/textarea';
 import { usePollStatus } from '@/shared/hooks/use-poll-status';
 import { getErrorMessage } from '@/shared/lib/error';
+import { cn } from '@/shared/lib/utils';
 
 interface StorySettingsProps {
   project: Project;
   onProjectUpdated?: (project: Project) => void;
 }
 
-export function StorySettings({ project, onProjectUpdated }: StorySettingsProps) {
+export function StorySettings({
+  project,
+  onProjectUpdated,
+}: StorySettingsProps) {
   const [outline, setOutline] = useState(project.storyOutline || '');
   const [characters, setCharacters] = useState<Character[]>([]);
   const [loadingCharacters, setLoadingCharacters] = useState(true);
   const [initStatus, setInitStatus] = useState<any>(null);
   const [isInitializing, setIsInitializing] = useState(false);
-  const [regeneratingIds, setRegeneratingIds] = useState<Set<string>>(new Set());
+  const [regeneratingIds, setRegeneratingIds] = useState<Set<string>>(
+    new Set()
+  );
 
   const isVertical = project.aspectRatio === '9:16';
   const showInitButton =
@@ -36,19 +50,15 @@ export function StorySettings({ project, onProjectUpdated }: StorySettingsProps)
     start: startPoll,
     stop: stopPoll,
     pollOnce,
-  } = usePollStatus(
-    () => getInitStatus(project.id),
-    {
-      interval: 3000,
-      stopCondition: (data) =>
-        ['completed', 'failed'].includes(data?.initStatus),
-      onError: (error) => {
-        if (process.env.NODE_ENV !== 'production') {
-          console.log('poll init status failed:', error);
-        }
-      },
-    }
-  );
+  } = usePollStatus(() => getInitStatus(project.id), {
+    interval: 3000,
+    stopCondition: (data) => ['completed', 'failed'].includes(data?.initStatus),
+    onError: (error) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('poll init status failed:', error);
+      }
+    },
+  });
 
   const refreshProject = useCallback(async () => {
     try {
@@ -172,15 +182,15 @@ export function StorySettings({ project, onProjectUpdated }: StorySettingsProps)
   return (
     <div className="space-y-10">
       {showInitButton ? (
-        <div className="relative overflow-hidden rounded-3xl border border-dashed border-border/60 bg-gradient-to-b from-muted/30 to-transparent px-6 py-16 text-center">
+        <div className="border-border/60 from-muted/30 relative overflow-hidden rounded-3xl border border-dashed bg-gradient-to-b to-transparent px-6 py-16 text-center">
           <div className="mx-auto flex max-w-md flex-col items-center gap-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
-              <Sparkles className="h-7 w-7 text-primary" />
+            <div className="bg-primary/10 flex h-14 w-14 items-center justify-center rounded-2xl">
+              <Sparkles className="text-primary h-7 w-7" />
             </div>
             <h3 className="text-lg font-semibold tracking-tight">
               一键初始化故事
             </h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               AI 将为你生成故事大纲、角色设定和封面图
             </p>
             <Button
@@ -202,11 +212,11 @@ export function StorySettings({ project, onProjectUpdated }: StorySettingsProps)
       ) : null}
 
       {project.status === 'initializing' || isInitializing ? (
-        <div className="rounded-2xl border border-border/50 bg-muted/30 p-5">
+        <div className="border-border/50 bg-muted/30 rounded-2xl border p-5">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium">初始化进度</p>
-              <p className="mt-1 text-xs text-muted-foreground">
+              <p className="text-muted-foreground mt-1 text-xs">
                 {initProgress?.stage || project.initStatus}
               </p>
             </div>
@@ -221,18 +231,18 @@ export function StorySettings({ project, onProjectUpdated }: StorySettingsProps)
             </Button>
           </div>
           {initProgress?.characterProgress && (
-            <p className="mt-3 text-xs text-muted-foreground">
+            <p className="text-muted-foreground mt-3 text-xs">
               角色图生成进度：{initProgress.characterProgress.ready}/
               {initProgress.characterProgress.total}
             </p>
           )}
           {initProgress?.coverStatus && (
-            <p className="mt-1 text-xs text-muted-foreground">
+            <p className="text-muted-foreground mt-1 text-xs">
               封面状态：{initProgress.coverStatus}
             </p>
           )}
           {project.initError && (
-            <p className="mt-2 text-xs text-destructive">{project.initError}</p>
+            <p className="text-destructive mt-2 text-xs">{project.initError}</p>
           )}
         </div>
       ) : null}
@@ -240,8 +250,8 @@ export function StorySettings({ project, onProjectUpdated }: StorySettingsProps)
       <div className="grid gap-8 lg:grid-cols-2">
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
-              <ImageIcon className="h-4 w-4 text-primary" />
+            <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-lg">
+              <ImageIcon className="text-primary h-4 w-4" />
             </div>
             <h3 className="text-base font-semibold tracking-tight">封面图</h3>
           </div>
@@ -249,7 +259,7 @@ export function StorySettings({ project, onProjectUpdated }: StorySettingsProps)
           <div className="group relative">
             <div
               className={cn(
-                'relative overflow-hidden rounded-2xl border border-border/50 bg-muted/30 shadow-sm transition-all duration-300 hover:shadow-lg',
+                'border-border/50 bg-muted/30 relative overflow-hidden rounded-2xl border shadow-sm transition-all duration-300 hover:shadow-lg',
                 isVertical ? 'aspect-[9/16] max-h-[480px]' : 'aspect-video'
               )}
             >
@@ -261,7 +271,7 @@ export function StorySettings({ project, onProjectUpdated }: StorySettingsProps)
                   className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                 />
               ) : (
-                <div className="flex h-full items-center justify-center text-xs text-muted-foreground">
+                <div className="text-muted-foreground flex h-full items-center justify-center text-xs">
                   暂无封面
                 </div>
               )}
@@ -278,12 +288,14 @@ export function StorySettings({ project, onProjectUpdated }: StorySettingsProps)
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
-                <Sparkles className="h-4 w-4 text-primary" />
+              <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-lg">
+                <Sparkles className="text-primary h-4 w-4" />
               </div>
-              <h3 className="text-base font-semibold tracking-tight">故事大纲</h3>
+              <h3 className="text-base font-semibold tracking-tight">
+                故事大纲
+              </h3>
             </div>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-muted-foreground text-xs">
               {outline.length} 字
             </span>
           </div>
@@ -293,7 +305,7 @@ export function StorySettings({ project, onProjectUpdated }: StorySettingsProps)
             onChange={(e) => setOutline(e.target.value)}
             placeholder="在这里描述你的故事背景、主要人物、故事脉络..."
             className={cn(
-              'resize-none rounded-2xl border-border/50 bg-muted/30 p-4 text-sm leading-relaxed transition-all focus:bg-background focus:shadow-sm',
+              'border-border/50 bg-muted/30 focus:bg-background resize-none rounded-2xl p-4 text-sm leading-relaxed transition-all focus:shadow-sm',
               isVertical ? 'min-h-[480px]' : 'min-h-[260px]'
             )}
           />
@@ -303,27 +315,27 @@ export function StorySettings({ project, onProjectUpdated }: StorySettingsProps)
       <div className="space-y-5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
-              <Users className="h-4 w-4 text-primary" />
+            <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-lg">
+              <Users className="text-primary h-4 w-4" />
             </div>
             <h3 className="text-base font-semibold tracking-tight">故事角色</h3>
-            <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+            <span className="bg-muted text-muted-foreground ml-2 rounded-full px-2 py-0.5 text-xs">
               {characters.length}
             </span>
           </div>
         </div>
 
         {loadingCharacters ? (
-          <div className="rounded-2xl border border-dashed border-border/60 bg-muted/20 px-6 py-10 text-center text-sm text-muted-foreground">
+          <div className="border-border/60 bg-muted/20 text-muted-foreground rounded-2xl border border-dashed px-6 py-10 text-center text-sm">
             角色加载中...
           </div>
         ) : characters.length === 0 ? (
-          <div className="relative overflow-hidden rounded-2xl border border-dashed border-border/60 bg-gradient-to-b from-muted/30 to-transparent px-6 py-16">
+          <div className="border-border/60 from-muted/30 relative overflow-hidden rounded-2xl border border-dashed bg-gradient-to-b to-transparent px-6 py-16">
             <div className="flex flex-col items-center text-center">
-              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-muted/80">
-                <Users className="h-7 w-7 text-muted-foreground/60" />
+              <div className="bg-muted/80 mb-4 flex h-14 w-14 items-center justify-center rounded-xl">
+                <Users className="text-muted-foreground/60 h-7 w-7" />
               </div>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 暂无角色，AI 会根据故事大纲自动生成角色
               </p>
             </div>
@@ -333,11 +345,14 @@ export function StorySettings({ project, onProjectUpdated }: StorySettingsProps)
             {characters.map((character, index) => (
               <div
                 key={character.id}
-                className="group relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-b from-card to-card/50 p-1 shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-md animate-in fade-in slide-in-from-bottom-2"
-                style={{ animationDelay: `${index * 80}ms`, animationFillMode: 'backwards' }}
+                className="group border-border/50 from-card to-card/50 hover:border-primary/30 animate-in fade-in slide-in-from-bottom-2 relative overflow-hidden rounded-2xl border bg-gradient-to-b p-1 shadow-sm transition-all duration-300 hover:shadow-md"
+                style={{
+                  animationDelay: `${index * 80}ms`,
+                  animationFillMode: 'backwards',
+                }}
               >
-                <div className="flex gap-4 rounded-xl bg-background/50 p-4">
-                  <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-muted shadow-inner">
+                <div className="bg-background/50 flex gap-4 rounded-xl p-4">
+                  <div className="bg-muted relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl shadow-inner">
                     {character.imageUrl ? (
                       <Image
                         src={character.imageUrl}
@@ -346,20 +361,20 @@ export function StorySettings({ project, onProjectUpdated }: StorySettingsProps)
                         className="object-cover transition-transform duration-300 group-hover:scale-110"
                       />
                     ) : (
-                      <div className="flex h-full items-center justify-center text-xs text-muted-foreground">
+                      <div className="text-muted-foreground flex h-full items-center justify-center text-xs">
                         暂无图片
                       </div>
                     )}
                   </div>
-                  <div className="flex flex-1 flex-col justify-center min-w-0">
+                  <div className="flex min-w-0 flex-1 flex-col justify-center">
                     <h4 className="truncate font-semibold tracking-tight">
                       {character.name}
                     </h4>
-                    <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+                    <p className="text-muted-foreground mt-1.5 line-clamp-2 text-sm leading-relaxed">
                       {character.description}
                     </p>
                     <div className="mt-3 flex items-center gap-2">
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-muted-foreground text-xs">
                         {character.status}
                       </span>
                       <Button
@@ -369,7 +384,9 @@ export function StorySettings({ project, onProjectUpdated }: StorySettingsProps)
                         disabled={regeneratingIds.has(character.id)}
                         className="h-7 rounded-lg px-2 text-xs"
                       >
-                        {regeneratingIds.has(character.id) ? '处理中...' : '重生成'}
+                        {regeneratingIds.has(character.id)
+                          ? '处理中...'
+                          : '重生成'}
                       </Button>
                     </div>
                   </div>

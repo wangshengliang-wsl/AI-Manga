@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Drop all tables in the database
- * 
+ *
  * Usage:
  *   tsx scripts/with-env.ts tsx scripts/drop-all-tables.ts
  */
@@ -9,14 +9,14 @@ import postgres from 'postgres';
 
 async function dropAllTables() {
   const databaseUrl = process.env.DATABASE_URL;
-  
+
   if (!databaseUrl) {
     console.error('❌ DATABASE_URL is not set');
     process.exit(1);
   }
 
   console.log('🔗 Connecting to database...');
-  
+
   const sql = postgres(databaseUrl, {
     max: 1,
     idle_timeout: 20,
@@ -36,15 +36,15 @@ async function dropAllTables() {
     } else {
       console.log(`📋 Found ${tables.length} tables to drop:`);
       tables.forEach((t) => console.log(`   - ${t.tablename}`));
-      
+
       // Drop all tables with CASCADE
       console.log('\n🗑️  Dropping all tables...');
-      
+
       for (const table of tables) {
         await sql`DROP TABLE IF EXISTS ${sql(table.tablename)} CASCADE`;
         console.log(`   ✓ Dropped ${table.tablename}`);
       }
-      
+
       console.log('\n✅ All tables dropped successfully!');
     }
 
@@ -53,8 +53,9 @@ async function dropAllTables() {
     await sql`DROP SCHEMA IF EXISTS drizzle CASCADE`;
     console.log('   ✓ Dropped drizzle schema');
 
-    console.log('\n🎉 Database cleanup complete! You can now run db:migrate again.');
-    
+    console.log(
+      '\n🎉 Database cleanup complete! You can now run db:migrate again.'
+    );
   } catch (error) {
     console.error('❌ Error:', error);
     process.exit(1);

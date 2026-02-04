@@ -2,8 +2,8 @@ import { respData, respErr } from '@/shared/lib/resp';
 import { findProjectById } from '@/shared/models/project';
 import {
   findStoryboardById,
-  updateStoryboardById,
   UpdateStoryboard,
+  updateStoryboardById,
 } from '@/shared/models/storyboard';
 import { getUserInfo } from '@/shared/models/user';
 

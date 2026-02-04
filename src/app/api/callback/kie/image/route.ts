@@ -1,13 +1,13 @@
-import { respOk, respErr } from '@/shared/lib/resp';
+import { respErr, respOk } from '@/shared/lib/resp';
+import { updateCharacterById } from '@/shared/models/character';
 import {
   findGenerationTaskByTaskId,
   updateGenerationTaskById,
 } from '@/shared/models/generation_task';
-import { updateCharacterById } from '@/shared/models/character';
 import { updateStoryboardById } from '@/shared/models/storyboard';
 import {
-  handleTaskSuccess,
   checkAndUpdateProjectInitStatus,
+  handleTaskSuccess,
 } from '@/shared/services/callback-handler';
 
 function verifySecret(request: Request) {

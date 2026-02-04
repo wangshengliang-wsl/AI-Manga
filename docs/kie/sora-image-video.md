@@ -1,4 +1,5 @@
 > ## Documentation Index
+>
 > Fetch the complete documentation index at: https://docs.kie.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
@@ -40,10 +41,9 @@ After submitting a task, use the unified query endpoint to check progress and re
   </Card>
 </CardGroup>
 
-
 ## OpenAPI
 
-````yaml market/sora2/sora-2-image-to-video.json post /api/v1/jobs/createTask
+```yaml market/sora2/sora-2-image-to-video.json post /api/v1/jobs/createTask
 openapi: 3.0.0
 info:
   title: Sora-2-image-to-video API
@@ -311,5 +311,4 @@ components:
 
         - If you suspect your API Key has been compromised, reset it immediately
         in the management page
-
-````
+```

@@ -1,4 +1,4 @@
-import { respOk, respErr } from '@/shared/lib/resp';
+import { respErr, respOk } from '@/shared/lib/resp';
 import { deleteProjectById, findProjectById } from '@/shared/models/project';
 import { getUserInfo } from '@/shared/models/user';
 

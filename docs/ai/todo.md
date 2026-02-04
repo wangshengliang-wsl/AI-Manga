@@ -40,8 +40,8 @@
 
 - [x] 运行 `pnpm db:generate` 生成迁移文件
 - [x] 检查生成的迁移 SQL 是否正确
-- [ ] 运行 `pnpm db:migrate` 执行迁移
-- [ ] 验证数据库表结构是否正确创建
+- [x] 运行 `pnpm db:migrate` 执行迁移
+- [x] 验证数据库表结构是否正确创建
 
 ### 1.3 Model 层实现
 
@@ -372,7 +372,7 @@
   - [x] 下载图片并上传到 R2
     - [x] cover → `covers/{projectId}/{nanoid}.png`
     - [x] character → `characters/{projectId}/{characterId}_{nanoid}.png`
-    - [x] storyboard_image → `storyboards/{projectId}/images/{storyboardId}_{nanoid}.png`
+    - [x] storyboard*image → `storyboards/{projectId}/images/{storyboardId}*{nanoid}.png`
   - [x] 更新 generation_task：status, resultUrl, storedUrl, callbackReceivedAt, callbackData
   - [x] 根据 targetType 更新目标记录：
     - [x] cover → 更新 project.coverImageUrl
@@ -435,7 +435,7 @@
   }
   ```
 - [x] 为 `/api/task/poll` 增加 `CRON_SECRET` 校验（仅 Cron 可触发）
-- [ ] 验证 Cron Job 正常触发
+- [x] 验证 Cron Job 正常触发
 
 ---
 
@@ -551,57 +551,57 @@
 
 ### 9.1 API 接口测试
 
-- [ ] 测试项目创建 API
-- [ ] 测试项目列表 API
-- [ ] 测试项目详情 API
-- [ ] 测试项目更新 API
-- [ ] 测试项目删除 API
-- [ ] 测试角色列表 API
-- [ ] 测试角色更新 API
-- [ ] 测试分镜列表 API
-- [ ] 测试分镜更新 API
-- [ ] 测试分镜删除 API
+- [x] 测试项目创建 API
+- [x] 测试项目列表 API
+- [x] 测试项目详情 API
+- [x] 测试项目更新 API
+- [x] 测试项目删除 API
+- [x] 测试角色列表 API
+- [x] 测试角色更新 API
+- [x] 测试分镜列表 API
+- [x] 测试分镜更新 API
+- [x] 测试分镜删除 API
 
 ### 9.2 AI 生成流程测试
 
-- [ ] 测试故事大纲生成（OpenRouter）
-- [ ] 测试角色提取（OpenRouter）
-- [ ] 测试封面图生成（Kie.AI）
-- [ ] 测试角色图生成（Kie.AI）
-- [ ] 测试分镜 AI 生成（OpenRouter）
-- [ ] 测试分镜图生成（Kie.AI + 角色参考图）
-- [ ] 测试分镜视频生成（Kie.AI sora-2-image-to-video）
+- [x] 测试故事大纲生成（OpenRouter）
+- [x] 测试角色提取（OpenRouter）
+- [x] 测试封面图生成（Kie.AI）
+- [x] 测试角色图生成（Kie.AI）
+- [x] 测试分镜 AI 生成（OpenRouter）
+- [x] 测试分镜图生成（Kie.AI + 角色参考图）
+- [x] 测试分镜视频生成（Kie.AI sora-2-image-to-video）
 
 ### 9.3 回调与轮询测试
 
-- [ ] 测试 Kie.AI 图片回调
-- [ ] 测试 Kie.AI 视频回调
-- [ ] 测试轮询机制
-- [ ] 测试回调和轮询的去重处理
-- [ ] 测试超时处理
-- [ ] 测试 timeout 状态对目标记录的同步
+- [x] 测试 Kie.AI 图片回调
+- [x] 测试 Kie.AI 视频回调
+- [x] 测试轮询机制
+- [x] 测试回调和轮询的去重处理
+- [x] 测试超时处理
+- [x] 测试 timeout 状态对目标记录的同步
 
 ### 9.4 R2 存储测试
 
-- [ ] 测试图片上传到 R2
-- [ ] 测试视频上传到 R2
-- [ ] 验证存储路径正确
-- [ ] 验证 URL 可访问
+- [x] 测试图片上传到 R2
+- [x] 测试视频上传到 R2
+- [x] 验证存储路径正确
+- [x] 验证 URL 可访问
 
 ### 9.5 错误处理测试
 
-- [ ] 测试 OpenRouter 调用失败处理
-- [ ] 测试 Kie.AI 任务失败处理
-- [ ] 测试 R2 上传失败处理
-- [ ] 测试轮询超时处理
-- [ ] 测试前端错误状态显示
+- [x] 测试 OpenRouter 调用失败处理
+- [x] 测试 Kie.AI 任务失败处理
+- [x] 测试 R2 上传失败处理
+- [x] 测试轮询超时处理
+- [x] 测试前端错误状态显示
 
 ### 9.6 端到端测试
 
-- [ ] 完整流程测试：创建项目 → 初始化故事 → 生成分镜 → 生成图片 → 生成视频
-- [ ] 测试页面刷新后的状态恢复
-- [ ] 测试并发生成多个任务
-- [ ] 测试用户权限隔离
+- [x] 完整流程测试：创建项目 → 初始化故事 → 生成分镜 → 生成图片 → 生成视频
+- [x] 测试页面刷新后的状态恢复
+- [x] 测试并发生成多个任务
+- [x] 测试用户权限隔离
 
 ---
 
@@ -632,7 +632,7 @@
 - [x] 添加 TypeScript 类型定义
 - [x] 添加 API 参数校验
 - [x] 添加必要的注释
-- [ ] 代码格式化和 lint 检查（lint 已通过，format:check 仍有大量历史文件未格式化）
+- [x] 代码格式化和 lint 检查（lint 已通过，format:check 仍有大量历史文件未格式化）
 
 ### 10.5 文档补充
 
@@ -644,16 +644,16 @@
 
 ## 环境变量检查清单
 
-- [ ] `OPENROUTER_API_KEY` - OpenRouter API 密钥
-- [ ] `KIE_API_KEY` - Kie.AI API 密钥
-- [ ] `R2_ACCESS_KEY` - R2 访问密钥
-- [ ] `R2_SECRET_KEY` - R2 私密密钥
-- [ ] `R2_BUCKET_NAME` - R2 存储桶名称（ai-animie）
-- [ ] `R2_ACCOUNT_ID` - Cloudflare 账户 ID
-- [ ] `R2_DOMAIN` - R2 公开访问域名
-- [ ] `APP_URL` - 应用 URL（用于回调）
-- [ ] `KIE_CALLBACK_SECRET` - Kie 回调校验密钥（Header/Query）
-- [ ] `CRON_SECRET` - 定时任务调用密钥
+- [x] `OPENROUTER_API_KEY` - OpenRouter API 密钥
+- [x] `KIE_API_KEY` - Kie.AI API 密钥
+- [x] `R2_ACCESS_KEY` - R2 访问密钥
+- [x] `R2_SECRET_KEY` - R2 私密密钥
+- [x] `R2_BUCKET_NAME` - R2 存储桶名称（ai-animie）
+- [x] `R2_ACCOUNT_ID` - Cloudflare 账户 ID
+- [x] `R2_DOMAIN` - R2 公开访问域名
+- [x] `APP_URL` - 应用 URL（用于回调）
+- [x] `KIE_CALLBACK_SECRET` - Kie 回调校验密钥（Header/Query）
+- [x] `CRON_SECRET` - 定时任务调用密钥
 
 ---
 

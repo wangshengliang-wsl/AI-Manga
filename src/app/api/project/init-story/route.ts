@@ -1,24 +1,27 @@
 import { and, eq, inArray } from 'drizzle-orm';
 
-import { envConfigs } from '@/config';
 import { db } from '@/core/db';
+import { envConfigs } from '@/config';
 import { project as projectTable } from '@/config/db/schema';
 import { AIMediaType } from '@/extensions/ai';
-import { getUuid } from '@/shared/lib/hash';
-import { respData, respErr } from '@/shared/lib/resp';
-import styles from '@/shared/styles/index.json';
 import {
   getCharacterExtractionPrompt,
   getCharacterImagePrompt,
   getCoverImagePrompt,
   getStoryOutlinePrompt,
 } from '@/shared/lib/ai-prompts';
-import { createCharacters, updateCharacterById } from '@/shared/models/character';
+import { getUuid } from '@/shared/lib/hash';
+import { respData, respErr } from '@/shared/lib/resp';
+import {
+  createCharacters,
+  updateCharacterById,
+} from '@/shared/models/character';
 import { createGenerationTask } from '@/shared/models/generation_task';
 import { findProjectById, updateProjectById } from '@/shared/models/project';
 import { getUserInfo } from '@/shared/models/user';
-import { callOpenRouter } from '@/shared/services/openrouter';
 import { getAIService } from '@/shared/services/ai';
+import { callOpenRouter } from '@/shared/services/openrouter';
+import styles from '@/shared/styles/index.json';
 
 interface StyleItem {
   id: number;
@@ -61,7 +64,10 @@ export async function POST(request: Request) {
       return respErr('no permission');
     }
 
-    if (project.status !== 'draft' || !['pending', 'failed'].includes(project.initStatus || '')) {
+    if (
+      project.status !== 'draft' ||
+      !['pending', 'failed'].includes(project.initStatus || '')
+    ) {
       return respData({
         message: 'project already initializing or ready',
         status: project.status,

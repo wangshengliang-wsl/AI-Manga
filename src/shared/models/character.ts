@@ -5,7 +5,9 @@ import { character } from '@/config/db/schema';
 
 export type Character = typeof character.$inferSelect;
 export type NewCharacter = typeof character.$inferInsert;
-export type UpdateCharacter = Partial<Omit<NewCharacter, 'id' | 'createdAt' | 'userId'>>;
+export type UpdateCharacter = Partial<
+  Omit<NewCharacter, 'id' | 'createdAt' | 'userId'>
+>;
 
 export async function createCharacter(data: NewCharacter) {
   const [result] = await db().insert(character).values(data).returning();

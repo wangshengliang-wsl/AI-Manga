@@ -5,7 +5,6 @@ import { ArrowLeft, BookOpen, Clapperboard, Trash2 } from 'lucide-react';
 
 import { Link } from '@/core/i18n/navigation';
 import { Button } from '@/shared/components/ui/button';
-import { cn } from '@/shared/lib/utils';
 import {
   Dialog,
   DialogClose,
@@ -16,6 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/components/ui/dialog';
+import { cn } from '@/shared/lib/utils';
 
 export type ProjectStep = 'story' | 'storyboard';
 
@@ -38,7 +38,11 @@ export function ProjectNavbar({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const steps: { key: ProjectStep; label: string; icon: React.ReactNode }[] = [
     { key: 'story', label: '故事设定', icon: <BookOpen className="h-4 w-4" /> },
-    { key: 'storyboard', label: '分镜设定', icon: <Clapperboard className="h-4 w-4" /> },
+    {
+      key: 'storyboard',
+      label: '分镜设定',
+      icon: <Clapperboard className="h-4 w-4" />,
+    },
   ];
 
   const handleConfirmDelete = async () => {
@@ -91,7 +95,7 @@ export function ProjectNavbar({
   );
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
+    <header className="border-border/40 bg-background/80 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 border-b backdrop-blur-xl">
       <div className="container">
         <div className="relative flex flex-col gap-3 py-3 md:h-16 md:py-0">
           {/* 顶部: 返回 + 项目名 + 操作 */}
@@ -101,12 +105,12 @@ export function ProjectNavbar({
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-9 w-9 rounded-xl transition-colors hover:bg-muted"
+                  className="hover:bg-muted h-9 w-9 rounded-xl transition-colors"
                 >
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
               </Link>
-              <div className="h-6 w-px bg-border/60" />
+              <div className="bg-border/60 h-6 w-px" />
               <h1 className="max-w-[180px] truncate text-base font-semibold tracking-tight md:max-w-[280px] lg:max-w-[400px]">
                 {projectName}
               </h1>
@@ -116,7 +120,7 @@ export function ProjectNavbar({
 
           {/* 步骤切换 */}
           <nav className="md:absolute md:left-1/2 md:-translate-x-1/2">
-            <div className="flex items-center gap-1 rounded-xl bg-muted/60 p-1 shadow-inner">
+            <div className="bg-muted/60 flex items-center gap-1 rounded-xl p-1 shadow-inner">
               {steps.map((step) => (
                 <button
                   key={step.key}
@@ -128,10 +132,12 @@ export function ProjectNavbar({
                       : 'text-muted-foreground hover:text-foreground'
                   )}
                 >
-                  <span className={cn(
-                    'transition-colors',
-                    activeStep === step.key ? 'text-primary' : ''
-                  )}>
+                  <span
+                    className={cn(
+                      'transition-colors',
+                      activeStep === step.key ? 'text-primary' : ''
+                    )}
+                  >
                     {step.icon}
                   </span>
                   <span>{step.label}</span>
@@ -143,7 +149,7 @@ export function ProjectNavbar({
       </div>
 
       {/* 底部渐变线 */}
-      <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
+      <div className="via-border/50 absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent to-transparent" />
     </header>
   );
 }

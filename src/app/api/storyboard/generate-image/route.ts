@@ -8,7 +8,10 @@ import {
   findGenerationTaskByTaskId,
 } from '@/shared/models/generation_task';
 import { findProjectById } from '@/shared/models/project';
-import { findStoryboardById, updateStoryboardById } from '@/shared/models/storyboard';
+import {
+  findStoryboardById,
+  updateStoryboardById,
+} from '@/shared/models/storyboard';
 import { getUserInfo } from '@/shared/models/user';
 import { getAIService } from '@/shared/services/ai';
 
@@ -62,7 +65,9 @@ export async function POST(request: Request) {
       .map((c) => c.imageUrl as string);
 
     if (!characterImageUrls.length) {
-      return respErr('character images missing, please generate character images first');
+      return respErr(
+        'character images missing, please generate character images first'
+      );
     }
 
     const aiService = await getAIService();

@@ -33,7 +33,10 @@ export function parseJsonFromText(text: string) {
     return JSON.parse(cleaned);
   } catch {
     const firstBrace = cleaned.search(/[\[{]/);
-    const lastBrace = Math.max(cleaned.lastIndexOf('}'), cleaned.lastIndexOf(']'));
+    const lastBrace = Math.max(
+      cleaned.lastIndexOf('}'),
+      cleaned.lastIndexOf(']')
+    );
     if (firstBrace >= 0 && lastBrace > firstBrace) {
       const slice = cleaned.slice(firstBrace, lastBrace + 1);
       try {
@@ -95,8 +98,9 @@ export async function callOpenRouter(
     throw new Error('openrouter_api_key is not set');
   }
 
-  const baseUrl = (configs.openrouter_base_url || 'https://openrouter.ai/api/v1')
-    .replace(/\/$/, '');
+  const baseUrl = (
+    configs.openrouter_base_url || 'https://openrouter.ai/api/v1'
+  ).replace(/\/$/, '');
   const url = `${baseUrl}/chat/completions`;
 
   const payload: Record<string, any> = {
@@ -138,7 +142,9 @@ export async function callOpenRouter(
 
       if (payload.stream) {
         const content = await readStreamContent(resp);
-        const parsedJson = options.parseJson ? parseJsonFromText(content) : null;
+        const parsedJson = options.parseJson
+          ? parseJsonFromText(content)
+          : null;
         return { content, raw: null, parsedJson: parsedJson ?? undefined };
       }
 

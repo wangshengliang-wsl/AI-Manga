@@ -1,6 +1,9 @@
-import { respOk, respErr } from '@/shared/lib/resp';
+import { respErr, respOk } from '@/shared/lib/resp';
 import { findProjectById } from '@/shared/models/project';
-import { findStoryboardById, deleteStoryboardById } from '@/shared/models/storyboard';
+import {
+  deleteStoryboardById,
+  findStoryboardById,
+} from '@/shared/models/storyboard';
 import { getUserInfo } from '@/shared/models/user';
 
 export async function POST(request: Request) {

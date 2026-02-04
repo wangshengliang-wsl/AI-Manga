@@ -46,7 +46,10 @@ export async function updateCharacter(data: {
   });
 }
 
-export async function regenerateCharacterImage(characterId: string, prompt?: string) {
+export async function regenerateCharacterImage(
+  characterId: string,
+  prompt?: string
+) {
   return requestJson<{ taskId: string; status: string }>(
     '/api/character/regenerate-image',
     {

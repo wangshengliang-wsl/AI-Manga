@@ -38,7 +38,10 @@ export async function GET(request: Request) {
     let coverStatus = 'pending';
     if (project.coverImageUrl) {
       coverStatus = 'ready';
-    } else if (latestCoverTask?.status === 'processing' || latestCoverTask?.status === 'pending') {
+    } else if (
+      latestCoverTask?.status === 'processing' ||
+      latestCoverTask?.status === 'pending'
+    ) {
       coverStatus = 'generating';
     } else if (latestCoverTask?.status === 'failed') {
       coverStatus = 'failed';

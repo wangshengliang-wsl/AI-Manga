@@ -1,15 +1,18 @@
 import { nanoid } from 'nanoid';
 
 import { AITaskStatus } from '@/extensions/ai';
-import { getStorageService } from '@/shared/services/storage';
 import {
-  updateGenerationTaskById,
-  GenerationTask,
+  findCharactersByProjectId,
+  updateCharacterById,
+} from '@/shared/models/character';
+import {
   findGenerationTasksByTargetId,
+  GenerationTask,
+  updateGenerationTaskById,
 } from '@/shared/models/generation_task';
-import { updateProjectById, findProjectById } from '@/shared/models/project';
-import { updateCharacterById, findCharactersByProjectId } from '@/shared/models/character';
+import { findProjectById, updateProjectById } from '@/shared/models/project';
 import { updateStoryboardById } from '@/shared/models/storyboard';
+import { getStorageService } from '@/shared/services/storage';
 
 function extractResultUrls(data: any): string[] {
   if (!data) return [];
@@ -20,9 +23,10 @@ function extractResultUrls(data: any): string[] {
 
   if (data.resultJson) {
     try {
-      const parsed = typeof data.resultJson === 'string'
-        ? JSON.parse(data.resultJson)
-        : data.resultJson;
+      const parsed =
+        typeof data.resultJson === 'string'
+          ? JSON.parse(data.resultJson)
+          : data.resultJson;
       if (Array.isArray(parsed?.resultUrls)) {
         return parsed.resultUrls.filter(Boolean);
       }
@@ -201,9 +205,12 @@ export async function checkAndUpdateProjectInitStatus(projectId: string) {
 
   const coverFailed =
     latestCoverTask && ['failed', 'timeout'].includes(latestCoverTask.status);
-  const coverReady = !!project.coverImageUrl || latestCoverTask?.status === 'success';
+  const coverReady =
+    !!project.coverImageUrl || latestCoverTask?.status === 'success';
 
-  const hasFailure = characters.some((c) => ['failed', 'timeout'].includes(c.status));
+  const hasFailure = characters.some((c) =>
+    ['failed', 'timeout'].includes(c.status)
+  );
   const allReady =
     characters.length > 0 && characters.every((c) => c.status === 'ready');
 

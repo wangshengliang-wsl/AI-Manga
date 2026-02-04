@@ -1,11 +1,13 @@
-import { and, asc, inArray, eq, isNull, lt, or } from 'drizzle-orm';
+import { and, asc, eq, inArray, isNull, lt, or } from 'drizzle-orm';
 
 import { db } from '@/core/db';
 import { generationTask } from '@/config/db/schema';
 
 export type GenerationTask = typeof generationTask.$inferSelect;
 export type NewGenerationTask = typeof generationTask.$inferInsert;
-export type UpdateGenerationTask = Partial<Omit<NewGenerationTask, 'id' | 'createdAt' | 'userId'>>;
+export type UpdateGenerationTask = Partial<
+  Omit<NewGenerationTask, 'id' | 'createdAt' | 'userId'>
+>;
 
 export async function createGenerationTask(data: NewGenerationTask) {
   const [result] = await db().insert(generationTask).values(data).returning();

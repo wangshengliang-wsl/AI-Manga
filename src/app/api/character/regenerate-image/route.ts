@@ -1,8 +1,8 @@
 import { envConfigs } from '@/config';
 import { AIMediaType } from '@/extensions/ai';
+import { getCharacterImagePrompt } from '@/shared/lib/ai-prompts';
 import { getUuid } from '@/shared/lib/hash';
 import { respData, respErr } from '@/shared/lib/resp';
-import styles from '@/shared/styles/index.json';
 import {
   findCharacterById,
   updateCharacterById,
@@ -11,7 +11,7 @@ import { createGenerationTask } from '@/shared/models/generation_task';
 import { findProjectById } from '@/shared/models/project';
 import { getUserInfo } from '@/shared/models/user';
 import { getAIService } from '@/shared/services/ai';
-import { getCharacterImagePrompt } from '@/shared/lib/ai-prompts';
+import styles from '@/shared/styles/index.json';
 
 interface StyleItem {
   id: number;

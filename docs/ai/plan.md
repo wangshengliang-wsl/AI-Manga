@@ -14,15 +14,15 @@
 
 ### 1.2 技术栈
 
-| 类别 | 技术 |
-|------|------|
-| 前端框架 | Next.js 15 + React 19 |
-| 后端框架 | Next.js API Routes |
-| 数据库 | PostgreSQL (Drizzle ORM) |
+| 类别        | 技术                                       |
+| ----------- | ------------------------------------------ |
+| 前端框架    | Next.js 15 + React 19                      |
+| 后端框架    | Next.js API Routes                         |
+| 数据库      | PostgreSQL (Drizzle ORM)                   |
 | AI 文本生成 | OpenRouter (google/gemini-3-flash-preview) |
-| AI 图片生成 | Kie.AI (nano-banana-pro) |
-| AI 视频生成 | Kie.AI (sora-2-image-to-video) |
-| 对象存储 | Cloudflare R2 (bucket: ai-animie) |
+| AI 图片生成 | Kie.AI (nano-banana-pro)                   |
+| AI 视频生成 | Kie.AI (sora-2-image-to-video)             |
+| 对象存储    | Cloudflare R2 (bucket: ai-animie)          |
 
 ### 1.3 现有基础设施
 
@@ -52,15 +52,15 @@ export const project = table(
     userId: text('user_id')
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
-    name: text('name').notNull(),                          // 项目名称
-    description: text('description'),                       // 项目描述
-    coverImageUrl: text('cover_image_url'),                // 封面图 URL
+    name: text('name').notNull(), // 项目名称
+    description: text('description'), // 项目描述
+    coverImageUrl: text('cover_image_url'), // 封面图 URL
     aspectRatio: text('aspect_ratio').notNull().default('16:9'), // 画幅比例: 16:9 | 9:16
-    styleId: integer('style_id').notNull().default(1),     // 风格 ID (对应 styles/index.json)
-    storyOutline: text('story_outline'),                   // 故事大纲 (AI 生成)
-    status: text('status').notNull().default('draft'),     // 状态: draft | initializing | ready | archived
+    styleId: integer('style_id').notNull().default(1), // 风格 ID (对应 styles/index.json)
+    storyOutline: text('story_outline'), // 故事大纲 (AI 生成)
+    status: text('status').notNull().default('draft'), // 状态: draft | initializing | ready | archived
     initStatus: text('init_status').notNull().default('pending'), // 初始化状态: pending | generating_outline | generating_characters | generating_cover | completed | failed
-    initError: text('init_error'),                         // 初始化错误信息
+    initError: text('init_error'), // 初始化错误信息
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at')
       .defaultNow()
@@ -88,14 +88,14 @@ export const character = table(
     userId: text('user_id')
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
-    name: text('name').notNull(),                          // 角色名称
-    description: text('description'),                       // 角色描述
-    imageUrl: text('image_url'),                           // 角色图片 URL (R2)
-    imagePrompt: text('image_prompt'),                     // 角色图片生成提示词
-    traits: jsonb('traits'),                               // 角色特征 (JSON)
-    status: text('status').notNull().default('pending'),   // 状态: pending | generating | ready | failed | timeout
-    taskId: text('task_id'),                               // Kie.AI 任务 ID
-    taskError: text('task_error'),                         // 任务错误信息
+    name: text('name').notNull(), // 角色名称
+    description: text('description'), // 角色描述
+    imageUrl: text('image_url'), // 角色图片 URL (R2)
+    imagePrompt: text('image_prompt'), // 角色图片生成提示词
+    traits: jsonb('traits'), // 角色特征 (JSON)
+    status: text('status').notNull().default('pending'), // 状态: pending | generating | ready | failed | timeout
+    taskId: text('task_id'), // Kie.AI 任务 ID
+    taskError: text('task_error'), // 任务错误信息
     sortOrder: integer('sort_order').default(0).notNull(), // 排序顺序
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at')
@@ -126,23 +126,23 @@ export const storyboard = table(
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
     sortOrder: integer('sort_order').default(0).notNull(), // 分镜顺序
-    description: text('description'),                       // 分镜描述 (包含角色、对话、景别、场景)
-    characterIds: jsonb('character_ids'),                  // 关联角色 ID 列表 (JSON Array, 默认 [])
-    
+    description: text('description'), // 分镜描述 (包含角色、对话、景别、场景)
+    characterIds: jsonb('character_ids'), // 关联角色 ID 列表 (JSON Array, 默认 [])
+
     // 分镜图相关
-    imageUrl: text('image_url'),                           // 分镜图 URL (R2)
-    imagePrompt: text('image_prompt'),                     // 分镜图生成提示词
-    imageStatus: text('image_status').default('pending'),  // 图片状态: pending | generating | ready | failed | timeout
-    imageTaskId: text('image_task_id'),                    // 图片生成任务 ID
-    imageError: text('image_error'),                       // 图片生成错误信息
-    
+    imageUrl: text('image_url'), // 分镜图 URL (R2)
+    imagePrompt: text('image_prompt'), // 分镜图生成提示词
+    imageStatus: text('image_status').default('pending'), // 图片状态: pending | generating | ready | failed | timeout
+    imageTaskId: text('image_task_id'), // 图片生成任务 ID
+    imageError: text('image_error'), // 图片生成错误信息
+
     // 分镜视频相关
-    videoUrl: text('video_url'),                           // 分镜视频 URL (R2)
-    videoPrompt: text('video_prompt'),                     // 运镜视频提示词
-    videoStatus: text('video_status').default('pending'),  // 视频状态: pending | generating | ready | failed | timeout
-    videoTaskId: text('video_task_id'),                    // 视频生成任务 ID
-    videoError: text('video_error'),                       // 视频生成错误信息
-    
+    videoUrl: text('video_url'), // 分镜视频 URL (R2)
+    videoPrompt: text('video_prompt'), // 运镜视频提示词
+    videoStatus: text('video_status').default('pending'), // 视频状态: pending | generating | ready | failed | timeout
+    videoTaskId: text('video_task_id'), // 视频生成任务 ID
+    videoError: text('video_error'), // 视频生成错误信息
+
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at')
       .defaultNow()
@@ -171,34 +171,35 @@ export const generationTask = table(
     userId: text('user_id')
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
-    projectId: text('project_id')
-      .references(() => project.id, { onDelete: 'cascade' }),
-    
+    projectId: text('project_id').references(() => project.id, {
+      onDelete: 'cascade',
+    }),
+
     // 任务关联
-    targetType: text('target_type').notNull(),             // 目标类型: cover | character | storyboard_image | storyboard_video
-    targetId: text('target_id').notNull(),                 // 目标 ID (character.id 或 storyboard.id 或 project.id)
-    
+    targetType: text('target_type').notNull(), // 目标类型: cover | character | storyboard_image | storyboard_video
+    targetId: text('target_id').notNull(), // 目标 ID (character.id 或 storyboard.id 或 project.id)
+
     // Kie.AI 任务信息
-    taskId: text('task_id').notNull().unique(),            // Kie.AI 任务 ID
-    model: text('model').notNull(),                        // 使用的模型: nano-banana-pro | sora-2-image-to-video
-    prompt: text('prompt').notNull(),                      // 生成提示词
-    options: jsonb('options'),                             // 其他参数 (JSON)
-    
+    taskId: text('task_id').notNull().unique(), // Kie.AI 任务 ID
+    model: text('model').notNull(), // 使用的模型: nano-banana-pro | sora-2-image-to-video
+    prompt: text('prompt').notNull(), // 生成提示词
+    options: jsonb('options'), // 其他参数 (JSON)
+
     // 状态追踪
-    status: text('status').notNull().default('pending'),   // 状态: pending | processing | success | failed | timeout
-    resultUrl: text('result_url'),                         // Kie.AI 返回的原始 URL
-    storedUrl: text('stored_url'),                         // 保存到 R2 后的 URL
-    errorCode: text('error_code'),                         // 错误代码
-    errorMessage: text('error_message'),                   // 错误信息
-    
+    status: text('status').notNull().default('pending'), // 状态: pending | processing | success | failed | timeout
+    resultUrl: text('result_url'), // Kie.AI 返回的原始 URL
+    storedUrl: text('stored_url'), // 保存到 R2 后的 URL
+    errorCode: text('error_code'), // 错误代码
+    errorMessage: text('error_message'), // 错误信息
+
     // 轮询追踪
     pollCount: integer('poll_count').notNull().default(0), // 轮询次数
-    lastPolledAt: timestamp('last_polled_at'),             // 最后轮询时间
-    
+    lastPolledAt: timestamp('last_polled_at'), // 最后轮询时间
+
     // 回调追踪
     callbackReceivedAt: timestamp('callback_received_at'), // 回调接收时间
-    callbackData: jsonb('callback_data'),                  // 回调原始数据 (JSON)
-    
+    callbackData: jsonb('callback_data'), // 回调原始数据 (JSON)
+
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at')
       .defaultNow()
@@ -252,10 +253,10 @@ export const generationTask = table(
 
 ```typescript
 interface CreateProjectRequest {
-  name: string;           // 项目名称 (必填)
-  description?: string;   // 项目描述
-  aspectRatio: '16:9' | '9:16';  // 画幅比例 (必填)
-  styleId: number;        // 风格 ID (必填, 1-16)
+  name: string; // 项目名称 (必填)
+  description?: string; // 项目描述
+  aspectRatio: '16:9' | '9:16'; // 画幅比例 (必填)
+  styleId: number; // 风格 ID (必填, 1-16)
 }
 ```
 
@@ -268,10 +269,10 @@ interface CreateProjectResponse {
     id: string;
     name: string;
     description: string | null;
-    coverImageUrl: string | null;  // 默认 null
+    coverImageUrl: string | null; // 默认 null
     aspectRatio: string;
     styleId: number;
-    storyOutline: string | null;   // 默认 null
+    storyOutline: string | null; // 默认 null
     status: 'draft';
     createdAt: string;
     updatedAt: string;
@@ -293,9 +294,9 @@ interface CreateProjectResponse {
 
 ```typescript
 interface ListProjectsQuery {
-  page?: number;      // 页码，默认 1
-  pageSize?: number;  // 每页数量，默认 20
-  status?: string;    // 状态过滤
+  page?: number; // 页码，默认 1
+  pageSize?: number; // 每页数量，默认 20
+  status?: string; // 状态过滤
 }
 ```
 
@@ -354,6 +355,7 @@ interface UpdateProjectRequest {
 - **响应**: `{ code: number, data: { message: string } }`
 
 **补充要求**:
+
 - 使用条件更新/事务，只有 `status='draft'` 且 `initStatus in ('pending','failed')` 才允许进入初始化；否则直接返回当前状态，避免重复初始化与并发创建任务
 - 进入流程前清空 `initError`，并记录本次初始化开始时间（可选字段）
 
@@ -419,12 +421,12 @@ interface UpdateProjectRequest {
 interface InitStatusResponse {
   code: number;
   data: {
-    status: string;           // draft | initializing | ready
-    initStatus: string;       // pending | generating_outline | generating_characters | generating_cover | completed | failed
+    status: string; // draft | initializing | ready
+    initStatus: string; // pending | generating_outline | generating_characters | generating_cover | completed | failed
     initError: string | null;
     storyOutline: string | null;
     coverImageUrl: string | null;
-    coverStatus: string;      // pending | generating | ready | failed | timeout
+    coverStatus: string; // pending | generating | ready | failed | timeout
     characterProgress: {
       total: number;
       ready: number;
@@ -507,7 +509,7 @@ interface ListStoryboardsResponse {
 ```typescript
 interface GenerateStoryboardRequest {
   projectId: string;
-  count?: number;  // 生成数量，默认 5
+  count?: number; // 生成数量，默认 5
 }
 ```
 
@@ -536,6 +538,7 @@ interface GenerateStoryboardRequest {
 ```
 
 **校验与清洗**:
+
 - 仅允许使用提供的角色 ID，过滤无效/重复 ID
 - sortOrder 统一重排为 1..N，避免重复/跳号
 - 若 imagePrompt / videoPrompt 缺失则返回错误（提示重试），避免入库脏数据
@@ -547,10 +550,10 @@ interface GenerateStoryboardRequest {
 interface AIStoryboardOutput {
   storyboards: {
     sortOrder: number;
-    description: string;        // 分镜描述 (包含角色、对话、景别、场景)
-    characterIds: string[];     // 出现的角色 ID 列表
-    imagePrompt: string;        // 分镜图提示词 (含角色描述 + 场景 + 风格)
-    videoPrompt: string;        // 运镜视频提示词
+    description: string; // 分镜描述 (包含角色、对话、景别、场景)
+    characterIds: string[]; // 出现的角色 ID 列表
+    imagePrompt: string; // 分镜图提示词 (含角色描述 + 场景 + 风格)
+    videoPrompt: string; // 运镜视频提示词
   }[];
 }
 ```
@@ -562,6 +565,7 @@ interface AIStoryboardOutput {
 - **请求体**: `{ storyboardId: string }`
 
 **补充要求**:
+
 - 若已有 `imageTaskId` 且对应任务仍在 `pending/processing`，直接返回该任务，避免重复创建
 - 若关联角色全部缺少 `imageUrl`，返回错误提示需先生成角色图；若部分缺失，仅传入已有角色图并记录告警
 
@@ -604,6 +608,7 @@ interface AIStoryboardOutput {
 - **前提条件**: 分镜必须已有图片 (imageStatus === 'ready')
 
 **补充要求**:
+
 - 若已有 `videoTaskId` 且对应任务仍在 `pending/processing`，直接返回该任务，避免重复创建
 - `image_urls` 需为公网可访问 URL（建议使用 R2 公网域名），且格式/大小满足 Kie 要求（jpg/png/webp，≤10MB）
 
@@ -677,6 +682,7 @@ interface UpdateStoryboardRequest {
 - **请求体**: Kie.AI 回调数据 (与 Query Task API 响应结构相同)
 
 **安全与幂等**:
+
 - 校验回调密钥（Header 或 Query），未通过则拒绝
 - 若任务已是 `success/failed/timeout`，直接返回，避免重复处理
 
@@ -694,14 +700,14 @@ async function handleKieImageCallback(data: KieCallbackData) {
       errorCode: data.failCode,
       errorMessage: data.failMsg,
       callbackReceivedAt: new Date(),
-      callbackData: data
+      callbackData: data,
     });
     return;
   }
-  
+
   // 2. 解析结果
   const resultUrls = JSON.parse(data.resultJson).resultUrls;
-  
+
   // 3. 下载图片到 R2
   const r2Key =
     task.targetType === 'cover'
@@ -711,27 +717,30 @@ async function handleKieImageCallback(data: KieCallbackData) {
         : `storyboards/${task.projectId}/images/${task.targetId}_${nanoid()}.png`;
   const r2Url = await downloadAndUploadToR2(resultUrls[0], {
     bucket: 'ai-animie',
-    key: r2Key
+    key: r2Key,
   });
-  
+
   // 4. 更新 generation_task
   await updateGenerationTask(task.id, {
     status: 'success',
     resultUrl: resultUrls[0],
     storedUrl: r2Url,
     callbackReceivedAt: new Date(),
-    callbackData: data
+    callbackData: data,
   });
-  
+
   // 5. 更新目标记录 (project/character/storyboard)
   if (task.targetType === 'cover') {
     await updateProject(task.targetId, { coverImageUrl: r2Url });
   } else if (task.targetType === 'character') {
     await updateCharacter(task.targetId, { imageUrl: r2Url, status: 'ready' });
   } else if (task.targetType === 'storyboard_image') {
-    await updateStoryboard(task.targetId, { imageUrl: r2Url, imageStatus: 'ready' });
+    await updateStoryboard(task.targetId, {
+      imageUrl: r2Url,
+      imageStatus: 'ready',
+    });
   }
-  
+
   // 6. 检查项目初始化是否完成
   await checkAndUpdateProjectInitStatus(task.projectId);
 }
@@ -751,7 +760,7 @@ async function handleKieImageCallback(data: KieCallbackData) {
 
 - **路径**: `POST /api/task/poll`
 - **描述**: 后端定时任务调用，轮询 pending 状态的生成任务
-- **触发方式**: 
+- **触发方式**:
   - Vercel Cron Job (每 1 分钟)
   - 或前端主动调用
   - 建议对 Cron 调用增加 `CRON_SECRET` 校验，避免被外部滥用
@@ -764,27 +773,26 @@ async function pollPendingTasks() {
   const pendingTasks = await findPendingGenerationTasks({
     status: ['pending', 'processing'],
     lastPolledBefore: new Date(Date.now() - 50000), // 50秒前
-    pollCountLessThan: 30 // 最多轮询 30 次 (约 30 分钟)
+    pollCountLessThan: 30, // 最多轮询 30 次 (约 30 分钟)
   });
-  
+
   // 2. 逐个查询 Kie.AI 任务状态
   for (const task of pendingTasks) {
     const aiService = await getAIService();
     const provider = aiService.getProvider('kie');
-    
+
     const result = await provider.query({
       taskId: task.taskId,
-      mediaType:
-        task.targetType === 'storyboard_video' ? 'video' : 'image'
+      mediaType: task.targetType === 'storyboard_video' ? 'video' : 'image',
     });
-    
+
     // 3. 更新任务状态
     await updateGenerationTask(task.id, {
       status: mapKieStatus(result.taskStatus),
       pollCount: task.pollCount + 1,
-      lastPolledAt: new Date()
+      lastPolledAt: new Date(),
     });
-    
+
     // 4. 如果成功，执行后续处理 (与回调逻辑相同)
     if (result.taskStatus === 'success') {
       await handleTaskSuccess(task, result);
@@ -1078,12 +1086,15 @@ ai-animie/
 import styles from '@/shared/styles/index.json';
 
 function getStylePrompt(styleId: number): string {
-  const style = styles.find(s => s.id === styleId);
+  const style = styles.find((s) => s.id === styleId);
   if (!style) throw new Error('Invalid style ID');
   return style.prompt;
 }
 
-function buildCharacterImagePrompt(character: Character, styleId: number): string {
+function buildCharacterImagePrompt(
+  character: Character,
+  styleId: number
+): string {
   const stylePrompt = getStylePrompt(styleId);
   return `${stylePrompt}
 Character portrait of ${character.name}.
@@ -1095,16 +1106,16 @@ Aspect ratio: 1:1`;
 }
 
 function buildStoryboardImagePrompt(
-  storyboard: Storyboard, 
+  storyboard: Storyboard,
   characters: Character[],
   styleId: number
 ): string {
   const stylePrompt = getStylePrompt(styleId);
   const characterDescriptions = characters
-    .filter(c => storyboard.characterIds.includes(c.id))
-    .map(c => `${c.name}: ${c.traits.appearance}`)
+    .filter((c) => storyboard.characterIds.includes(c.id))
+    .map((c) => `${c.name}: ${c.traits.appearance}`)
     .join('; ');
-  
+
   return `${stylePrompt}
 Scene: ${storyboard.description}
 Characters: ${characterDescriptions}
@@ -1117,29 +1128,32 @@ High quality anime illustration.`;
 生成分镜图时，传入角色参考图确保角色一致性：
 
 ```typescript
-async function generateStoryboardImage(storyboard: Storyboard, project: Project) {
+async function generateStoryboardImage(
+  storyboard: Storyboard,
+  project: Project
+) {
   const characters = await getCharactersByIds(storyboard.characterIds);
   const characterImageUrls = characters
-    .filter(c => c.imageUrl)
-    .map(c => c.imageUrl!);
-  
+    .filter((c) => c.imageUrl)
+    .map((c) => c.imageUrl!);
+
   const aiService = await getAIService();
   const provider = aiService.getProvider('kie');
-  
+
   const result = await provider.generateImage({
     params: {
       model: 'nano-banana-pro',
       prompt: storyboard.imagePrompt,
       options: {
-        image_input: characterImageUrls,  // 传入角色参考图
+        image_input: characterImageUrls, // 传入角色参考图
         aspect_ratio: project.aspectRatio,
         resolution: '2K',
-        output_format: 'png'
+        output_format: 'png',
       },
-      callbackUrl: `${process.env.APP_URL}/api/callback/kie/image`
-    }
+      callbackUrl: `${process.env.APP_URL}/api/callback/kie/image`,
+    },
   });
-  
+
   return result;
 }
 ```
@@ -1150,12 +1164,12 @@ async function generateStoryboardImage(storyboard: Storyboard, project: Project)
 
 ### 7.1 AI 生成失败处理
 
-| 场景 | 处理方式 |
-|------|----------|
-| OpenRouter 调用失败 | 记录错误，更新 `initError`，允许重试 |
-| Kie.AI 任务失败 | 更新 generation_task 为 `failed`，并同步更新目标记录状态 |
-| R2 上传失败 | 保留原始 URL，记录错误日志 |
-| 轮询超时 (30min) | 标记任务为 `timeout`，并将目标记录状态置为 `timeout` |
+| 场景                | 处理方式                                                 |
+| ------------------- | -------------------------------------------------------- |
+| OpenRouter 调用失败 | 记录错误，更新 `initError`，允许重试                     |
+| Kie.AI 任务失败     | 更新 generation_task 为 `failed`，并同步更新目标记录状态 |
+| R2 上传失败         | 保留原始 URL，记录错误日志                               |
+| 轮询超时 (30min)    | 标记任务为 `timeout`，并将目标记录状态置为 `timeout`     |
 
 ### 7.2 状态恢复
 

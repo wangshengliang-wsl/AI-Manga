@@ -5,7 +5,9 @@ import { project } from '@/config/db/schema';
 
 export type Project = typeof project.$inferSelect;
 export type NewProject = typeof project.$inferInsert;
-export type UpdateProject = Partial<Omit<NewProject, 'id' | 'createdAt' | 'userId'>>;
+export type UpdateProject = Partial<
+  Omit<NewProject, 'id' | 'createdAt' | 'userId'>
+>;
 
 export async function createProject(data: NewProject) {
   const [result] = await db().insert(project).values(data).returning();
@@ -20,7 +22,10 @@ export async function findProjectById(
     .select()
     .from(project)
     .where(
-      and(eq(project.id, id), includeDeleted ? undefined : isNull(project.deletedAt))
+      and(
+        eq(project.id, id),
+        includeDeleted ? undefined : isNull(project.deletedAt)
+      )
     )
     .limit(1);
 

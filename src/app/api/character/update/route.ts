@@ -1,8 +1,8 @@
 import { respData, respErr } from '@/shared/lib/resp';
 import {
   findCharacterById,
-  updateCharacterById,
   UpdateCharacter,
+  updateCharacterById,
 } from '@/shared/models/character';
 import { findProjectById } from '@/shared/models/project';
 import { getUserInfo } from '@/shared/models/user';

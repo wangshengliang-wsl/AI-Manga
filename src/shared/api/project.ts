@@ -71,7 +71,12 @@ export async function getProjectList(params?: {
   if (params?.pageSize) query.set('pageSize', String(params.pageSize));
   if (params?.status) query.set('status', params.status);
   const url = `/api/project/list?${query.toString()}`;
-  return requestJson<{ list: Project[]; total: number; page: number; pageSize: number }>(url, {
+  return requestJson<{
+    list: Project[];
+    total: number;
+    page: number;
+    pageSize: number;
+  }>(url, {
     method: 'GET',
   });
 }

@@ -1,12 +1,6 @@
 {
   "page": {
-    "show_sections": [
-      "hero",
-      "discover_more",
-      "usage",
-      "features",
-      "cta"
-    ],
+    "show_sections": ["hero", "discover_more", "usage", "features", "cta"],
     "sections": {
       "hero": {
         "id": "hero",

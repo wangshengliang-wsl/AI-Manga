@@ -3,17 +3,18 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { FileQuestion } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { Link } from '@/core/i18n/navigation';
+import { deleteProject, getProjectInfo, Project } from '@/shared/api/project';
+import { StorySettingsSkeleton } from '@/shared/components/skeleton/story-settings-skeleton';
+import { StoryboardCardSkeleton } from '@/shared/components/skeleton/storyboard-card-skeleton';
 import { Button } from '@/shared/components/ui/button';
-import { Project, deleteProject, getProjectInfo } from '@/shared/api/project';
+import { getErrorMessage } from '@/shared/lib/error';
+
 import { ProjectNavbar, ProjectStep } from './project-navbar';
 import { StorySettings } from './story-settings';
 import { StoryboardSettings } from './storyboard-settings';
-import { StorySettingsSkeleton } from '@/shared/components/skeleton/story-settings-skeleton';
-import { StoryboardCardSkeleton } from '@/shared/components/skeleton/storyboard-card-skeleton';
-import { toast } from 'sonner';
-import { getErrorMessage } from '@/shared/lib/error';
 
 export default function ProjectDetailPage() {
   const params = useParams();
@@ -72,12 +73,12 @@ export default function ProjectDetailPage() {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="flex flex-col items-center gap-4 text-center">
-          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-muted">
-            <FileQuestion className="h-10 w-10 text-muted-foreground/60" />
+          <div className="bg-muted flex h-20 w-20 items-center justify-center rounded-2xl">
+            <FileQuestion className="text-muted-foreground/60 h-10 w-10" />
           </div>
           <div>
             <h2 className="text-xl font-semibold tracking-tight">项目不存在</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
+            <p className="text-muted-foreground mt-1 text-sm">
               该项目可能已被删除或链接无效
             </p>
           </div>
@@ -92,7 +93,7 @@ export default function ProjectDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/10">
+    <div className="from-background to-muted/10 min-h-screen bg-gradient-to-b">
       <ProjectNavbar
         projectName={project?.name || '加载中...'}
         activeStep={activeStep}

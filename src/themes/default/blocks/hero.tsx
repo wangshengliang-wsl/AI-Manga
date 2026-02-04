@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
 
 import { Link } from '@/core/i18n/navigation';
 import { SmartIcon } from '@/shared/blocks/common';
@@ -54,7 +54,10 @@ export function Hero({
     };
     updateColor();
     const observer = new MutationObserver(updateColor);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
     return () => observer.disconnect();
   }, []);
 
@@ -70,7 +73,7 @@ export function Hero({
     <section
       id={section.id}
       className={cn(
-        'relative min-h-screen pt-24 pb-8 md:pt-36 md:pb-8 overflow-hidden',
+        'relative min-h-screen overflow-hidden pt-24 pb-8 md:pt-36 md:pb-8',
         section.className,
         className
       )}
@@ -100,24 +103,27 @@ export function Hero({
         className="relative z-10"
       >
         {section.announcement && (
-          <motion.div variants={fadeInUp} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
+          <motion.div
+            variants={fadeInUp}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
             <Link
               href={section.announcement.url || ''}
               target={section.announcement.target || '_self'}
-              className="hover:bg-background dark:hover:border-t-border bg-muted/80 backdrop-blur-sm group mx-auto mb-8 flex w-fit items-center gap-4 rounded-full border border-primary/20 p-1 pl-4 shadow-lg shadow-primary/5 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:scale-[1.02] dark:border-t-white/5 dark:shadow-zinc-950"
+              className="hover:bg-background dark:hover:border-t-border bg-muted/80 group border-primary/20 shadow-primary/5 hover:shadow-primary/10 mx-auto mb-8 flex w-fit items-center gap-4 rounded-full border p-1 pl-4 shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-xl dark:border-t-white/5 dark:shadow-zinc-950"
             >
               <span className="text-foreground text-sm font-medium">
                 {section.announcement.title}
               </span>
-              <span className="dark:border-background block h-4 w-0.5 border-l bg-primary/30 dark:bg-zinc-700"></span>
+              <span className="dark:border-background bg-primary/30 block h-4 w-0.5 border-l dark:bg-zinc-700"></span>
 
               <div className="bg-primary/10 group-hover:bg-primary/20 size-6 overflow-hidden rounded-full duration-500">
                 <div className="flex w-12 -translate-x-1/2 duration-500 ease-in-out group-hover:translate-x-0">
                   <span className="flex size-6">
-                    <ArrowRight className="m-auto size-3 text-primary" />
+                    <ArrowRight className="text-primary m-auto size-3" />
                   </span>
                   <span className="flex size-6">
-                    <ArrowRight className="m-auto size-3 text-primary" />
+                    <ArrowRight className="text-primary m-auto size-3" />
                   </span>
                 </div>
               </div>
@@ -134,21 +140,39 @@ export function Hero({
               <h1 className="text-foreground text-4xl font-bold tracking-tight text-pretty sm:mt-12 sm:text-6xl lg:text-7xl">
                 {texts[0]}
                 <span className="relative inline-block">
-                  <span className="relative z-10 bg-gradient-to-r from-[#8A79AB] via-[#5c4d78] via-50% to-[#8A79AB] dark:from-[#A495C6] dark:via-[#6b5d8a] dark:to-[#A495C6] bg-clip-text text-transparent bg-[length:200%_auto] animate-shimmer-slow drop-shadow-[0_0_25px_rgba(138,121,171,0.5)] dark:drop-shadow-[0_0_30px_rgba(164,149,198,0.6)]">
+                  <span className="animate-shimmer-slow relative z-10 bg-gradient-to-r from-[#8A79AB] via-[#5c4d78] via-50% to-[#8A79AB] bg-[length:200%_auto] bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(138,121,171,0.5)] dark:from-[#A495C6] dark:via-[#6b5d8a] dark:to-[#A495C6] dark:drop-shadow-[0_0_30px_rgba(164,149,198,0.6)]">
                     {highlightText}
                   </span>
                   <svg
-                    className="absolute -bottom-2 left-0 w-full h-4 overflow-visible"
+                    className="absolute -bottom-2 left-0 h-4 w-full overflow-visible"
                     viewBox="0 0 200 20"
                     preserveAspectRatio="none"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <defs>
-                      <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor={raysColor ?? RAYS_COLOR_LIGHT} stopOpacity="0.2" />
-                        <stop offset="50%" stopColor={raysColor ?? RAYS_COLOR_LIGHT} stopOpacity="1" />
-                        <stop offset="100%" stopColor={raysColor ?? RAYS_COLOR_LIGHT} stopOpacity="0.2" />
+                      <linearGradient
+                        id="waveGradient"
+                        x1="0%"
+                        y1="0%"
+                        x2="100%"
+                        y2="0%"
+                      >
+                        <stop
+                          offset="0%"
+                          stopColor={raysColor ?? RAYS_COLOR_LIGHT}
+                          stopOpacity="0.2"
+                        />
+                        <stop
+                          offset="50%"
+                          stopColor={raysColor ?? RAYS_COLOR_LIGHT}
+                          stopOpacity="1"
+                        />
+                        <stop
+                          offset="100%"
+                          stopColor={raysColor ?? RAYS_COLOR_LIGHT}
+                          stopOpacity="0.2"
+                        />
                       </linearGradient>
                     </defs>
                     <path
@@ -173,7 +197,7 @@ export function Hero({
           <motion.p
             variants={fadeInUp}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="text-muted-foreground mt-8 mb-8 text-lg text-balance leading-relaxed max-w-3xl mx-auto"
+            className="text-muted-foreground mx-auto mt-8 mb-8 max-w-3xl text-lg leading-relaxed text-balance"
             dangerouslySetInnerHTML={{ __html: section.description ?? '' }}
           />
 
@@ -182,19 +206,19 @@ export function Hero({
               id={hotComicsId}
               variants={scaleIn}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="mb-10 -mx-4 md:-mx-[calc((100vw-100%)/2)]"
+              className="-mx-4 mb-10 md:-mx-[calc((100vw-100%)/2)]"
             >
-              <div className="w-screen relative left-1/2 -translate-x-1/2">
-                <div className="group/carousel relative overflow-hidden border-y border-primary/10 bg-gradient-to-b from-background/80 to-muted/30 py-3 shadow-2xl shadow-primary/5 backdrop-blur-sm">
+              <div className="relative left-1/2 w-screen -translate-x-1/2">
+                <div className="group/carousel border-primary/10 from-background/80 to-muted/30 shadow-primary/5 relative overflow-hidden border-y bg-gradient-to-b py-3 shadow-2xl backdrop-blur-sm">
                   {/* Gradient overlays */}
-                  <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background via-background/80 to-transparent" />
-                  <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background via-background/80 to-transparent" />
+                  <div className="from-background via-background/80 pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r to-transparent" />
+                  <div className="from-background via-background/80 pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l to-transparent" />
 
                   <div className="flex [gap:var(--gap)] [--duration:35s] [--gap:0.75rem] group-hover/carousel:[animation-play-state:paused]">
                     {Array.from({ length: 4 }, (_, repeatIdx) => (
                       <div
                         key={`hot-comics-row-${repeatIdx}`}
-                        className="flex shrink-0 [gap:var(--gap)] animate-marquee"
+                        className="animate-marquee flex shrink-0 [gap:var(--gap)]"
                       >
                         {hotComics.map((item: any, idx: number) => {
                           const src =
@@ -207,7 +231,7 @@ export function Hero({
                           return (
                             <div
                               key={`${repeatIdx}-${idx}`}
-                              className="group/card relative w-44 overflow-hidden rounded-xl border border-white/10 shadow-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 hover:z-20 sm:w-52 md:w-60"
+                              className="group/card hover:shadow-primary/20 relative w-44 overflow-hidden rounded-xl border border-white/10 shadow-lg transition-all duration-500 hover:z-20 hover:scale-105 hover:shadow-2xl sm:w-52 md:w-60"
                             >
                               <div className="aspect-video w-full overflow-hidden">
                                 {src ? (
@@ -237,7 +261,7 @@ export function Hero({
             <motion.div
               variants={fadeInUp}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="flex items-center justify-center gap-4 mt-8"
+              className="mt-8 flex items-center justify-center gap-4"
             >
               {section.buttons.map((button, idx) => (
                 <Button
@@ -247,11 +271,14 @@ export function Hero({
                   className={cn(
                     'px-6 text-sm font-medium transition-all duration-300 hover:scale-105',
                     button.variant === 'default' &&
-                      'shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30'
+                      'shadow-primary/25 hover:shadow-primary/30 shadow-lg hover:shadow-xl'
                   )}
                   key={idx}
                 >
-                  <Link href={button.url ?? ''} target={button.target ?? '_self'}>
+                  <Link
+                    href={button.url ?? ''}
+                    target={button.target ?? '_self'}
+                  >
                     {button.icon && <SmartIcon name={button.icon as string} />}
                     <span>{button.title}</span>
                   </Link>
@@ -281,7 +308,7 @@ export function Hero({
       </motion.div>
 
       {/* Bottom gradient transition to next section */}
-      <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-[1] h-24 md:h-32 bg-gradient-to-b from-transparent via-background/70 to-background" />
+      <div className="via-background/70 to-background pointer-events-none absolute right-0 bottom-0 left-0 z-[1] h-24 bg-gradient-to-b from-transparent md:h-32" />
 
       {section.background_image?.src && (
         <div className="absolute inset-0 -z-10 hidden h-full w-full overflow-hidden md:block">
@@ -289,7 +316,7 @@ export function Hero({
           <Image
             src={section.background_image.src}
             alt={section.background_image.alt || ''}
-            className="object-cover opacity-40 animate-ken-burns"
+            className="animate-ken-burns object-cover opacity-40"
             fill
             loading="lazy"
             sizes="(max-width: 768px) 0vw, 100vw"

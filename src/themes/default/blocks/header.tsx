@@ -84,7 +84,7 @@ export function Header({ header }: { header: HeaderType }) {
     return (
       <NavigationMenu
         viewport={false}
-        className="**:data-[slot=navigation-menu-content]:top-10 max-lg:hidden lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2"
+        className="**:data-[slot=navigation-menu-content]:top-10 max-lg:hidden lg:absolute lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2"
       >
         <NavigationMenuList className="gap-2">
           {header.nav?.items?.map((item, idx) => {

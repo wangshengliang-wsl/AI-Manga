@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { PrismaticBurst } from '@/shared/components/magicui/prismatic-burst';
 import { useTheme } from 'next-themes';
+
+import { PrismaticBurst } from '@/shared/components/magicui/prismatic-burst';
 
 const LOADING_MESSAGES = [
   'AI 是笔，创意是墨，故事永远由你书写。',
@@ -26,10 +27,13 @@ type LoaderState = 'pending' | 'visible' | 'exiting' | 'hidden';
 export function PageLoader() {
   const [state, setState] = useState<LoaderState>('pending');
   const [currentIndex, setCurrentIndex] = useState(() =>
-    Math.floor(Math.random() * LOADING_MESSAGES.length),
+    Math.floor(Math.random() * LOADING_MESSAGES.length)
   );
   const [themeColors, setThemeColors] = useState<string[]>([
-    '#a78bfa', '#c4b5fd', '#f0abfc', '#a7f3d0',
+    '#a78bfa',
+    '#c4b5fd',
+    '#f0abfc',
+    '#a7f3d0',
   ]);
   const startTimeRef = useRef<number>(0);
   const { resolvedTheme } = useTheme();
@@ -115,7 +119,8 @@ export function PageLoader() {
             className="text-center text-lg font-medium md:text-xl lg:text-2xl"
             style={{
               color: '#ffffff',
-              textShadow: '0 2px 10px rgba(0,0,0,0.5), 0 0 30px rgba(0,0,0,0.3)',
+              textShadow:
+                '0 2px 10px rgba(0,0,0,0.5), 0 0 30px rgba(0,0,0,0.3)',
             }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

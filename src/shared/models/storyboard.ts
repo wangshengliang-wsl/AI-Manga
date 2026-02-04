@@ -5,7 +5,9 @@ import { storyboard } from '@/config/db/schema';
 
 export type Storyboard = typeof storyboard.$inferSelect;
 export type NewStoryboard = typeof storyboard.$inferInsert;
-export type UpdateStoryboard = Partial<Omit<NewStoryboard, 'id' | 'createdAt' | 'userId'>>;
+export type UpdateStoryboard = Partial<
+  Omit<NewStoryboard, 'id' | 'createdAt' | 'userId'>
+>;
 
 export async function createStoryboard(data: NewStoryboard) {
   const [result] = await db().insert(storyboard).values(data).returning();
@@ -31,7 +33,9 @@ export async function findStoryboardsByProjectId(projectId: string) {
   const result = await db()
     .select()
     .from(storyboard)
-    .where(and(eq(storyboard.projectId, projectId), isNull(storyboard.deletedAt)))
+    .where(
+      and(eq(storyboard.projectId, projectId), isNull(storyboard.deletedAt))
+    )
     .orderBy(asc(storyboard.sortOrder));
   return result;
 }
@@ -58,7 +62,9 @@ export async function countStoryboardsByProjectId(projectId: string) {
   const [result] = await db()
     .select({ count: count() })
     .from(storyboard)
-    .where(and(eq(storyboard.projectId, projectId), isNull(storyboard.deletedAt)))
+    .where(
+      and(eq(storyboard.projectId, projectId), isNull(storyboard.deletedAt))
+    )
     .limit(1);
   return result?.count || 0;
 }

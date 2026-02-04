@@ -1,12 +1,12 @@
-import { respData, respErr } from '@/shared/lib/resp';
-import styles from '@/shared/styles/index.json';
 import { getStoryboardGenerationPrompt } from '@/shared/lib/ai-prompts';
 import { getUuid } from '@/shared/lib/hash';
+import { respData, respErr } from '@/shared/lib/resp';
 import { findCharactersByProjectId } from '@/shared/models/character';
 import { findProjectById } from '@/shared/models/project';
 import { createStoryboards } from '@/shared/models/storyboard';
 import { getUserInfo } from '@/shared/models/user';
 import { callOpenRouter } from '@/shared/services/openrouter';
+import styles from '@/shared/styles/index.json';
 
 interface StyleItem {
   id: number;
@@ -76,8 +76,12 @@ export async function POST(request: Request) {
         : [];
       const uniqueCharacterIds = Array.from(new Set(characterIds));
 
-      const imagePrompt = item.imagePrompt ? String(item.imagePrompt).trim() : '';
-      const videoPrompt = item.videoPrompt ? String(item.videoPrompt).trim() : '';
+      const imagePrompt = item.imagePrompt
+        ? String(item.imagePrompt).trim()
+        : '';
+      const videoPrompt = item.videoPrompt
+        ? String(item.videoPrompt).trim()
+        : '';
       if (!imagePrompt || !videoPrompt) {
         throw new Error('imagePrompt or videoPrompt is missing');
       }

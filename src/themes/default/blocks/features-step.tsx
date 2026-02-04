@@ -42,14 +42,18 @@ export function FeaturesStep({
   return (
     <section
       id={section.id}
-      className={cn('relative py-20 md:py-32 overflow-hidden', section.className, className)}
+      className={cn(
+        'relative overflow-hidden py-20 md:py-32',
+        section.className,
+        className
+      )}
     >
       {/* Background elements */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -left-24 top-8 h-64 w-64 rounded-full bg-primary/10 blur-[120px] opacity-60 animate-[drift_24s_ease-in-out_infinite]" />
-        <div className="absolute -right-24 bottom-8 h-72 w-72 rounded-full bg-accent/10 blur-[140px] opacity-50 animate-[drift_28s_ease-in-out_infinite_reverse]" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 h-px w-3/4 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-px w-3/4 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+        <div className="bg-primary/10 absolute top-8 -left-24 h-64 w-64 animate-[drift_24s_ease-in-out_infinite] rounded-full opacity-60 blur-[120px]" />
+        <div className="bg-accent/10 absolute -right-24 bottom-8 h-72 w-72 animate-[drift_28s_ease-in-out_infinite_reverse] rounded-full opacity-50 blur-[140px]" />
+        <div className="via-primary/20 absolute top-0 left-1/2 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent to-transparent" />
+        <div className="via-primary/20 absolute bottom-0 left-1/2 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent to-transparent" />
       </div>
 
       <div className="container">
@@ -57,14 +61,14 @@ export function FeaturesStep({
           <ScrollAnimation>
             <div className="mx-auto max-w-2xl text-center">
               {section.label && (
-                <span className="text-primary text-xs font-semibold uppercase tracking-[0.3em]">
+                <span className="text-primary text-xs font-semibold tracking-[0.3em] uppercase">
                   {section.label}
                 </span>
               )}
               <h2 className="text-foreground mt-4 text-4xl font-bold tracking-tight md:text-5xl">
                 {section.title}
               </h2>
-              <p className="text-muted-foreground mt-5 text-lg text-balance leading-relaxed">
+              <p className="text-muted-foreground mt-5 text-lg leading-relaxed text-balance">
                 {section.description}
               </p>
             </div>
@@ -89,11 +93,16 @@ export function FeaturesStep({
                     initial={{ scale: 0 }}
                     whileInView={{ scale: 1 }}
                     viewport={{ once: true }}
-                    transition={{ delay: idx * 0.15, duration: 0.4, type: 'spring', stiffness: 200 }}
+                    transition={{
+                      delay: idx * 0.15,
+                      duration: 0.4,
+                      type: 'spring',
+                      stiffness: 200,
+                    }}
                     className="relative mx-auto mb-6"
                   >
-                    <div className="relative z-10 mx-auto flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 shadow-lg shadow-primary/10 transition-all duration-300 group-hover:shadow-xl group-hover:shadow-primary/20 group-hover:scale-110">
-                      <span className="text-lg font-bold text-primary">
+                    <div className="from-primary/20 to-primary/5 border-primary/20 shadow-primary/10 group-hover:shadow-primary/20 relative z-10 mx-auto flex size-14 items-center justify-center rounded-2xl border bg-gradient-to-br shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl">
+                      <span className="text-primary text-lg font-bold">
                         {String(idx + 1).padStart(2, '0')}
                       </span>
                     </div>
@@ -104,13 +113,13 @@ export function FeaturesStep({
                     <motion.div
                       custom={idx}
                       variants={lineVariants}
-                      className="absolute top-7 left-[calc(50%+2rem)] right-[calc(-50%+2rem)] hidden h-px origin-left bg-gradient-to-r from-primary/40 via-primary/20 to-transparent @3xl:block"
+                      className="from-primary/40 via-primary/20 absolute top-7 right-[calc(-50%+2rem)] left-[calc(50%+2rem)] hidden h-px origin-left bg-gradient-to-r to-transparent @3xl:block"
                     />
                   )}
 
                   {/* Icon */}
                   {item.icon && (
-                    <div className="mx-auto my-5 flex size-12 items-center justify-center rounded-xl bg-muted/50 text-foreground transition-all duration-300 group-hover:bg-primary/10 group-hover:text-primary">
+                    <div className="bg-muted/50 text-foreground group-hover:bg-primary/10 group-hover:text-primary mx-auto my-5 flex size-12 items-center justify-center rounded-xl transition-all duration-300">
                       <SmartIcon name={item.icon as string} size={24} />
                     </div>
                   )}

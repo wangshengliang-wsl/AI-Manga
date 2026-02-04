@@ -1,11 +1,11 @@
-import styles from '@/shared/styles/index.json';
 import { respData, respErr } from '@/shared/lib/resp';
 import {
   findProjectById,
-  updateProjectById,
   UpdateProject,
+  updateProjectById,
 } from '@/shared/models/project';
 import { getUserInfo } from '@/shared/models/user';
+import styles from '@/shared/styles/index.json';
 
 interface StyleItem {
   id: number;

@@ -20,9 +20,5 @@ export default async function ProjectDetailLayout({
     redirect(`/${locale}/sign-in?callbackUrl=${callbackUrl}`);
   }
 
-  return (
-    <div className="min-h-screen bg-background">
-      {children}
-    </div>
-  );
+  return <div className="bg-background min-h-screen">{children}</div>;
 }

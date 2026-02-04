@@ -30,12 +30,16 @@ export function Features({
   return (
     <section
       id={section.id}
-      className={cn('relative overflow-hidden py-20 md:py-32', section.className, className)}
+      className={cn(
+        'relative overflow-hidden py-20 md:py-32',
+        section.className,
+        className
+      )}
     >
       {/* Ambient background glow */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-primary/10 blur-[120px] opacity-60 animate-[drift_22s_ease-in-out_infinite]" />
-        <div className="absolute -right-24 bottom-10 h-80 w-80 rounded-full bg-accent/10 blur-[140px] opacity-50 animate-[drift_26s_ease-in-out_infinite_reverse]" />
+        <div className="bg-primary/10 absolute top-10 -left-24 h-72 w-72 animate-[drift_22s_ease-in-out_infinite] rounded-full opacity-60 blur-[120px]" />
+        <div className="bg-accent/10 absolute -right-24 bottom-10 h-80 w-80 animate-[drift_26s_ease-in-out_infinite_reverse] rounded-full opacity-50 blur-[140px]" />
       </div>
 
       <div className={`container space-y-12 md:space-y-16`}>
@@ -44,7 +48,7 @@ export function Features({
             <h2 className="text-foreground mb-5 text-4xl font-bold tracking-tight md:text-5xl">
               {section.title}
             </h2>
-            <p className="text-muted-foreground text-lg leading-relaxed mb-8 md:mb-12 lg:mb-16">
+            <p className="text-muted-foreground mb-8 text-lg leading-relaxed md:mb-12 lg:mb-16">
               {section.description}
             </p>
           </div>
@@ -54,21 +58,21 @@ export function Features({
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
-          className="relative mx-auto grid gap-px overflow-hidden rounded-2xl border border-primary/10 bg-primary/5 sm:grid-cols-2 lg:grid-cols-3"
+          className="border-primary/10 bg-primary/5 relative mx-auto grid gap-px overflow-hidden rounded-2xl border sm:grid-cols-2 lg:grid-cols-3"
         >
           {section.items?.map((item, idx) => (
             <motion.div
               key={idx}
               custom={idx}
               variants={itemVariants}
-              className="group relative bg-background p-8 transition-all duration-300 hover:bg-muted/50"
+              className="group bg-background hover:bg-muted/50 relative p-8 transition-all duration-300"
             >
               {/* Hover glow effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <div className="from-primary/5 absolute inset-0 bg-gradient-to-br to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
               <div className="relative space-y-4">
                 <div className="flex items-center gap-3">
-                  <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary/20 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/10">
+                  <div className="bg-primary/10 text-primary group-hover:bg-primary/20 group-hover:shadow-primary/10 flex size-10 items-center justify-center rounded-xl transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg">
                     <SmartIcon name={item.icon as string} size={20} />
                   </div>
                   <h3 className="text-foreground text-base font-semibold tracking-tight">
@@ -81,7 +85,7 @@ export function Features({
               </div>
 
               {/* Border highlight on hover */}
-              <div className="absolute inset-0 rounded-none border border-transparent transition-all duration-300 group-hover:border-primary/20" />
+              <div className="group-hover:border-primary/20 absolute inset-0 rounded-none border border-transparent transition-all duration-300" />
             </motion.div>
           ))}
         </motion.div>

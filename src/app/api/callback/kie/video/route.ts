@@ -1,4 +1,4 @@
-import { respOk, respErr } from '@/shared/lib/resp';
+import { respErr, respOk } from '@/shared/lib/resp';
 import {
   findGenerationTaskByTaskId,
   updateGenerationTaskById,

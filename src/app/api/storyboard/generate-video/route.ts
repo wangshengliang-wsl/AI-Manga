@@ -7,7 +7,10 @@ import {
   findGenerationTaskByTaskId,
 } from '@/shared/models/generation_task';
 import { findProjectById } from '@/shared/models/project';
-import { findStoryboardById, updateStoryboardById } from '@/shared/models/storyboard';
+import {
+  findStoryboardById,
+  updateStoryboardById,
+} from '@/shared/models/storyboard';
 import { getUserInfo } from '@/shared/models/user';
 import { getAIService } from '@/shared/services/ai';
 
@@ -91,7 +94,8 @@ export async function POST(request: Request) {
       callbackSecret ? `?secret=${callbackSecret}` : ''
     }`;
 
-    const aspectRatio = project.aspectRatio === '9:16' ? 'portrait' : 'landscape';
+    const aspectRatio =
+      project.aspectRatio === '9:16' ? 'portrait' : 'landscape';
 
     const result = await provider.generate({
       params: {

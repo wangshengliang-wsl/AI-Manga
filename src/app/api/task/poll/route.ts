@@ -1,8 +1,11 @@
+import { AIMediaType } from '@/extensions/ai';
 import { respData, respErr } from '@/shared/lib/resp';
+import { updateCharacterById } from '@/shared/models/character';
 import {
   findPendingGenerationTasks,
   updateGenerationTaskById,
 } from '@/shared/models/generation_task';
+import { updateStoryboardById } from '@/shared/models/storyboard';
 import { getAIService } from '@/shared/services/ai';
 import {
   checkAndUpdateProjectInitStatus,
@@ -10,9 +13,6 @@ import {
   handleTaskTimeout,
   mapKieStatus,
 } from '@/shared/services/callback-handler';
-import { updateCharacterById } from '@/shared/models/character';
-import { updateStoryboardById } from '@/shared/models/storyboard';
-import { AIMediaType } from '@/extensions/ai';
 
 function verifySecret(request: Request) {
   const secret = process.env.CRON_SECRET;
@@ -55,9 +55,10 @@ export async function POST(request: Request) {
     let handled = 0;
 
     for (const task of pendingTasks) {
-      const mediaType = task.targetType === 'storyboard_video'
-        ? AIMediaType.VIDEO
-        : AIMediaType.IMAGE;
+      const mediaType =
+        task.targetType === 'storyboard_video'
+          ? AIMediaType.VIDEO
+          : AIMediaType.IMAGE;
 
       const result = await provider.query({
         taskId: task.taskId,

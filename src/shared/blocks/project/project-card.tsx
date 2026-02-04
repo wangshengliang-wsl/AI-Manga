@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { Clock, Film } from 'lucide-react';
 
 import { Link } from '@/core/i18n/navigation';
-import { cn } from '@/shared/lib/utils';
 import { Project } from '@/shared/api/project';
+import { cn } from '@/shared/lib/utils';
 
 function formatRelativeTime(dateStr: string): string {
   const date = new Date(dateStr);
@@ -44,9 +44,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
   return (
     <Link href={`/project/${project.id}`} className="group block">
-      <div className="relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-b from-card to-card/80 shadow-sm transition-all duration-500 ease-out hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1">
+      <div className="border-border/50 from-card to-card/80 hover:border-primary/30 hover:shadow-primary/5 relative overflow-hidden rounded-2xl border bg-gradient-to-b shadow-sm transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-xl">
         {/* 封面图区域 */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted/50">
+        <div className="bg-muted/50 relative aspect-[4/3] w-full overflow-hidden">
           {project.coverImageUrl ? (
             <Image
               src={project.coverImageUrl}
@@ -55,7 +55,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-muted/60 to-muted/30 text-xs text-muted-foreground">
+            <div className="from-muted/60 to-muted/30 text-muted-foreground flex h-full w-full items-center justify-center bg-gradient-to-br text-xs">
               暂无封面
             </div>
           )}
@@ -63,18 +63,20 @@ export function ProjectCard({ project }: ProjectCardProps) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
           {/* 画幅比标签 */}
-          <div className="absolute right-3 top-3">
-            <div className={cn(
-              'flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium backdrop-blur-md transition-all',
-              'bg-black/40 text-white/90 border border-white/10',
-              'group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary'
-            )}>
+          <div className="absolute top-3 right-3">
+            <div
+              className={cn(
+                'flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium backdrop-blur-md transition-all',
+                'border border-white/10 bg-black/40 text-white/90',
+                'group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary'
+              )}
+            >
               <Film className="h-3 w-3" />
               <span>{project.aspectRatio}</span>
             </div>
           </div>
 
-          <div className="absolute left-3 top-3">
+          <div className="absolute top-3 left-3">
             <div className="rounded-full bg-black/40 px-2.5 py-1 text-xs font-medium text-white/90 backdrop-blur-md">
               {statusLabel}
             </div>
@@ -84,13 +86,13 @@ export function ProjectCard({ project }: ProjectCardProps) {
         {/* 信息区域 */}
         <div className="relative p-4">
           {/* 装饰性顶部边框 */}
-          <div className="absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+          <div className="via-border absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent to-transparent" />
 
-          <h3 className="truncate text-base font-semibold tracking-tight text-foreground/90 transition-colors group-hover:text-foreground">
+          <h3 className="text-foreground/90 group-hover:text-foreground truncate text-base font-semibold tracking-tight transition-colors">
             {project.name}
           </h3>
 
-          <div className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
+          <div className="text-muted-foreground mt-2 flex items-center gap-1.5 text-xs">
             <Clock className="h-3 w-3" />
             <span>{formatRelativeTime(project.updatedAt)}</span>
           </div>
@@ -98,7 +100,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
         {/* 悬浮时的光晕效果 */}
         <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-          <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-primary/10 via-transparent to-primary/10" />
+          <div className="from-primary/10 to-primary/10 absolute -inset-px rounded-2xl bg-gradient-to-r via-transparent" />
         </div>
       </div>
     </Link>

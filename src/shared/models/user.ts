@@ -76,6 +76,9 @@ export async function getUserByUserIds(userIds: string[]) {
 }
 
 export async function getUserInfo() {
+  if (process.env.NODE_ENV === 'test' && process.env.TEST_USER_ID) {
+    return await findUserById(process.env.TEST_USER_ID);
+  }
   const signUser = await getSignUser();
 
   return signUser;
@@ -97,7 +100,9 @@ export async function getSignUser() {
 }
 
 export async function isEmailVerified(email: string): Promise<boolean> {
-  const normalized = String(email || '').trim().toLowerCase();
+  const normalized = String(email || '')
+    .trim()
+    .toLowerCase();
   if (!normalized) return false;
 
   const [row] = await db()

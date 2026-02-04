@@ -1,14 +1,20 @@
 'use client';
 
-import Image from 'next/image';
 import { useState } from 'react';
-import { Play, ImageIcon, Video, User, AlertCircle, Trash2 } from 'lucide-react';
+import Image from 'next/image';
+import {
+  AlertCircle,
+  ImageIcon,
+  Play,
+  Trash2,
+  User,
+  Video,
+} from 'lucide-react';
 
-import { Badge } from '@/shared/components/ui/badge';
-import { Button } from '@/shared/components/ui/button';
-import { cn } from '@/shared/lib/utils';
 import { Character } from '@/shared/api/character';
 import { Storyboard } from '@/shared/api/storyboard';
+import { Badge } from '@/shared/components/ui/badge';
+import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -19,6 +25,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/components/ui/dialog';
+import { cn } from '@/shared/lib/utils';
 
 interface StoryboardCardProps {
   storyboard: Storyboard;
@@ -53,7 +60,8 @@ export function StoryboardCard({
   const videoGenerating = videoStatus === 'generating';
   const imageFailed = ['failed', 'timeout'].includes(imageStatus || '');
   const videoFailed = ['failed', 'timeout'].includes(videoStatus || '');
-  const canGenerateVideo = storyboard.imageStatus === 'ready' && !!storyboard.imageUrl;
+  const canGenerateVideo =
+    storyboard.imageStatus === 'ready' && !!storyboard.imageUrl;
 
   const handleDelete = async () => {
     if (!onDelete) return;
@@ -62,15 +70,17 @@ export function StoryboardCard({
   };
 
   return (
-    <div className="group overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-r from-card via-card to-card/80 shadow-sm transition-all duration-300 hover:border-border hover:shadow-md md:max-h-[420px]">
+    <div className="group border-border/50 from-card via-card to-card/80 hover:border-border overflow-hidden rounded-2xl border bg-gradient-to-r shadow-sm transition-all duration-300 hover:shadow-md md:max-h-[420px]">
       <div className="grid h-full grid-cols-1 md:grid-cols-3">
-        <div className="flex flex-col border-b border-border/40 p-5 md:border-b-0 md:border-r">
+        <div className="border-border/40 flex flex-col border-b p-5 md:border-r md:border-b-0">
           <div className="mb-3 flex items-center justify-between gap-2.5">
             <div className="flex items-center gap-2.5">
-              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-xs font-bold text-primary-foreground shadow-sm">
+              <span className="bg-primary text-primary-foreground flex h-7 w-7 items-center justify-center rounded-lg text-xs font-bold shadow-sm">
                 {index + 1}
               </span>
-              <span className="text-sm font-medium text-foreground/80">分镜</span>
+              <span className="text-foreground/80 text-sm font-medium">
+                分镜
+              </span>
             </div>
             {onDelete ? (
               <Dialog open={open} onOpenChange={setOpen}>
@@ -81,7 +91,7 @@ export function StoryboardCard({
                     disabled={deleteDisabled}
                     className="rounded-lg"
                   >
-                    <Trash2 className="h-4 w-4 text-muted-foreground" />
+                    <Trash2 className="text-muted-foreground h-4 w-4" />
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-md">
@@ -108,19 +118,19 @@ export function StoryboardCard({
             ) : null}
           </div>
 
-          <p className="flex-1 overflow-y-auto text-sm leading-relaxed text-foreground/70 line-clamp-[10] pr-2 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border">
+          <p className="text-foreground/70 [&::-webkit-scrollbar-thumb]:bg-border line-clamp-[10] flex-1 overflow-y-auto pr-2 text-sm leading-relaxed [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full">
             {storyboard.description || ''}
           </p>
 
           {characterNames.length > 0 && (
-            <div className="mt-4 flex flex-wrap gap-1.5 border-t border-border/30 pt-3">
+            <div className="border-border/30 mt-4 flex flex-wrap gap-1.5 border-t pt-3">
               {characterNames.map((name) => (
                 <Badge
                   key={name}
                   variant="secondary"
-                  className="gap-1 rounded-lg bg-muted/80 px-2 py-1 text-xs font-normal"
+                  className="bg-muted/80 gap-1 rounded-lg px-2 py-1 text-xs font-normal"
                 >
-                  <User className="h-3 w-3 text-muted-foreground" />
+                  <User className="text-muted-foreground h-3 w-3" />
                   {name}
                 </Badge>
               ))}
@@ -128,18 +138,20 @@ export function StoryboardCard({
           )}
         </div>
 
-        <div className="flex flex-col border-b border-border/40 p-5 md:border-b-0 md:border-r">
+        <div className="border-border/40 flex flex-col border-b p-5 md:border-r md:border-b-0">
           <div className="mb-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <ImageIcon className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm font-medium text-foreground/80">分镜图</span>
+              <ImageIcon className="text-muted-foreground h-4 w-4" />
+              <span className="text-foreground/80 text-sm font-medium">
+                分镜图
+              </span>
             </div>
-            <span className="text-xs text-muted-foreground">{imageStatus}</span>
+            <span className="text-muted-foreground text-xs">{imageStatus}</span>
           </div>
 
           <div
             className={cn(
-              'relative flex-1 overflow-hidden rounded-xl bg-muted/50 shadow-inner',
+              'bg-muted/50 relative flex-1 overflow-hidden rounded-xl shadow-inner',
               isVertical ? 'aspect-[9/16]' : 'aspect-video'
             )}
           >
@@ -152,8 +164,8 @@ export function StoryboardCard({
               />
             ) : (
               <div className="flex h-full flex-col items-center justify-center gap-2">
-                <ImageIcon className="h-8 w-8 text-muted-foreground/40" />
-                <p className="text-xs text-muted-foreground">暂无分镜图</p>
+                <ImageIcon className="text-muted-foreground/40 h-8 w-8" />
+                <p className="text-muted-foreground text-xs">暂无分镜图</p>
               </div>
             )}
 
@@ -174,7 +186,7 @@ export function StoryboardCard({
             )}
 
             {imageFailed ? (
-              <div className="absolute left-2 top-2 flex items-center gap-1 rounded-full bg-red-500/10 px-2 py-1 text-xs text-red-500">
+              <div className="absolute top-2 left-2 flex items-center gap-1 rounded-full bg-red-500/10 px-2 py-1 text-xs text-red-500">
                 <AlertCircle className="h-3 w-3" />
                 生成失败
               </div>
@@ -185,15 +197,17 @@ export function StoryboardCard({
         <div className="flex flex-col p-5">
           <div className="mb-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Video className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm font-medium text-foreground/80">分镜视频</span>
+              <Video className="text-muted-foreground h-4 w-4" />
+              <span className="text-foreground/80 text-sm font-medium">
+                分镜视频
+              </span>
             </div>
-            <span className="text-xs text-muted-foreground">{videoStatus}</span>
+            <span className="text-muted-foreground text-xs">{videoStatus}</span>
           </div>
 
           <div
             className={cn(
-              'relative flex-1 overflow-hidden rounded-xl bg-muted/50 shadow-inner',
+              'bg-muted/50 relative flex-1 overflow-hidden rounded-xl shadow-inner',
               isVertical ? 'aspect-[9/16]' : 'aspect-video'
             )}
           >
@@ -211,14 +225,14 @@ export function StoryboardCard({
                     size="icon"
                     className="h-11 w-11 rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-transform hover:scale-110"
                   >
-                    <Play className="h-5 w-5 text-foreground" />
+                    <Play className="text-foreground h-5 w-5" />
                   </Button>
                 </div>
               </div>
             ) : (
               <div className="flex h-full flex-col items-center justify-center gap-2">
-                <Video className="h-8 w-8 text-muted-foreground/40" />
-                <p className="text-xs text-muted-foreground">暂无视频</p>
+                <Video className="text-muted-foreground/40 h-8 w-8" />
+                <p className="text-muted-foreground text-xs">暂无视频</p>
               </div>
             )}
 
@@ -240,13 +254,13 @@ export function StoryboardCard({
             )}
 
             {!canGenerateVideo ? (
-              <div className="absolute left-2 top-2 rounded-full bg-black/40 px-2 py-1 text-xs text-white/80">
+              <div className="absolute top-2 left-2 rounded-full bg-black/40 px-2 py-1 text-xs text-white/80">
                 需先生成分镜图
               </div>
             ) : null}
 
             {videoFailed ? (
-              <div className="absolute right-2 top-2 flex items-center gap-1 rounded-full bg-red-500/10 px-2 py-1 text-xs text-red-500">
+              <div className="absolute top-2 right-2 flex items-center gap-1 rounded-full bg-red-500/10 px-2 py-1 text-xs text-red-500">
                 <AlertCircle className="h-3 w-3" />
                 生成失败
               </div>
